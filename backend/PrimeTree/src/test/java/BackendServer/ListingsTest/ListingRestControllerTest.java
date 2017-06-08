@@ -52,8 +52,6 @@ import BackendServer.Listings.ListingBeanCollection;
 public class ListingRestControllerTest{
 	
     @Autowired
-    private WebApplicationContext wac;
-    @Autowired
     private ListingRESTController testRESTController;
     
     
@@ -72,7 +70,6 @@ public class ListingRestControllerTest{
     InputStream inputFileStream, inputFileStreamZwei, inputFileStreamDrei, inputFileStreamVier, inputFileStreamFuenf;
     MockMultipartFile file, fileZwei, fileDrei, fileVier, fileFuenf;
     
-	private MockMvc mockMvc;
 	
     @Before
     public void setup() {
