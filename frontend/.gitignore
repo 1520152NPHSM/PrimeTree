@@ -1,9 +1,0 @@
-magic-fountain/
-node_modules/
-aot/
-app/*.js
-app/*.js.map
-e2e/
-
-
-
