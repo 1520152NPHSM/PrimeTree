@@ -1,5 +1,6 @@
 package BackendServer.Listings.EntitiesTest;
 
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.Assert.*;
 
 import java.util.Date;
@@ -28,10 +29,11 @@ public class ListingTest {
 	private List<String> imageGallery;
 	private String imagepath1;
 	private String imagepath2;
-	private long dateOne, dateTwo;
+	private long createDate, deadLine;
 
 	
 	@Rule
+	
 	public ExpectedException thrown = ExpectedException.none();
 	// type is SellItem/Ridesharing
 	// kind is offering or request
@@ -40,13 +42,14 @@ public class ListingTest {
 	 */
 	@Before
 	public void initObjects() {
-		dateOne = new Date().getTime();
-		dateTwo = new Date().getTime()+20;
+		createDate = new Date().getTime();
+		deadLine = new Date().getTime()+20;
+
 		testListing = new SellItem();
 		initialiseJSONObject = new JSONObject();
 		initialiseJSONObject.put(Constants.listingDataFieldId, 0);
-		initialiseJSONObject.put(Constants.listingDataFieldCreateDate, dateOne);
-		initialiseJSONObject.put(Constants.listingDataFieldEndDate, dateTwo);
+		initialiseJSONObject.put(Constants.listingDataFieldCreateDate, createDate);
+		initialiseJSONObject.put(Constants.listingDataFieldDeadLine, deadLine);
 		initialiseJSONObject.put(Constants.listingDataFieldCreator, 0);
 		initialiseJSONObject.put(Constants.listingDataFieldDescription, "test");
 		initialiseJSONObject.put(Constants.listingDataFieldDeadLine, 1);
@@ -54,6 +57,7 @@ public class ListingTest {
 		initialiseJSONObject.put(Constants.listingDataFieldTitle, "test1");
 		initialiseJSONObject.put(Constants.listingDataFieldPrice, 0);
 		initialiseJSONObject.put(Constants.listingDataFieldCondition, "new");
+		initialiseJSONObject.put(Constants.listingDataFieldActive, true);
 
 		locations = new String[2];
 		locations[0] = "Mannheim";
@@ -76,12 +80,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void fillfieldsTestAllCorrectSellItem() {
-		try {
-			testListing.fillFields(initialiseJSONObject, 0);
-		} catch (WrongFormatException e) {
-			e.printStackTrace();
-		}
-		// assertEquals(testListing.getListingId(), 0);
+		testListing.fillFields(initialiseJSONObject, 0);
 		assertEquals(testListing.getOwner(), 0);
 		assertEquals(testListing.getDescription(), "test");
 		assertEquals(testListing.getTitle(), "test1");
@@ -94,9 +93,59 @@ public class ListingTest {
 	 * 
 	 * @throws WrongFormatException
 	 */
-	@Test(expected = Exception.class)
+	@Test(expected = WrongFormatException.class)
 	public void fillFieldsTestWithNull() throws WrongFormatException {
 		testListing.fillFields(null, 0);
+	}
+	
+	/**
+	 * TestFillFields with no createDate
+	 */
+	@Test(expected = WrongFormatException.class)
+	public void fillFieldsTestWithNoCreateDate(){
+		initialiseJSONObject.remove(Constants.listingDataFieldCreateDate);
+		testListing.fillFields(initialiseJSONObject, 0);
+	}
+	
+	/**
+	 * Test fillFields with no description
+	 */
+	@Test(expected = WrongFormatException.class)
+	public void fillFieldsTestWithNoDescription(){
+		initialiseJSONObject.remove(Constants.listingDataFieldDescription);
+		testListing.fillFields(initialiseJSONObject, 0);
+	}
+	
+	/**
+	 * Test fillFields with no location
+	 */
+	@Test(expected = WrongFormatException.class)
+	public void fillFieldsTestWithNoLocation(){
+		initialiseJSONObject.remove(Constants.listingDataFieldLocation);
+		testListing.fillFields(initialiseJSONObject, 0);
+	}
+	
+	/**
+	 * Test fillFields with no title
+	 */
+	@Test(expected = WrongFormatException.class)
+	public void fillFieldsTestWithNoTitle(){
+		initialiseJSONObject.remove(Constants.listingDataFieldTitle);
+		testListing.fillFields(initialiseJSONObject, 0);
+	}
+	
+	@Test
+	public void fillFieldsTestWithNoActiveField(){
+		initialiseJSONObject.remove(Constants.listingDataFieldActive);
+		testListing.fillFields(initialiseJSONObject, 0);
+		assertEquals(true, testListing.isActive());
+	}
+	
+	@Test
+	public void fillFieldsTestWithNoDeadLine(){
+		initialiseJSONObject.remove(Constants.listingDataFieldDeadLine);
+		testListing.fillFields(initialiseJSONObject, 0);
+		assertEquals(null, testListing.getExpiryDate());
 	}
 
 	/**
@@ -106,6 +155,7 @@ public class ListingTest {
 	@Test
 	public void toJSONTest() {
 		testJSON = testListing.toJSON();
+		testListing.fillFields(initialiseJSONObject, 0);
 
 		// assertEquals(testJSON.get("id"), testListing.getListingId());
 		assertEquals(testJSON.get(Constants.listingDataFieldCreator), testListing.getOwner());

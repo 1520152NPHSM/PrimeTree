@@ -190,7 +190,7 @@ public class ListingRestControllerTest{
 	public void getListingTestNegativeID(){
 		request = new MockHttpServletRequest("GET", "listing/{id}");
 		String result = testRESTController.getListing(-1, request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 	
 	
@@ -788,7 +788,7 @@ public class ListingRestControllerTest{
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
 		result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, 22, typeArray, null, Constants.sortOptionAlphabetical_Asc, request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	//------------------------------ getActiveListings -----------------------------------
