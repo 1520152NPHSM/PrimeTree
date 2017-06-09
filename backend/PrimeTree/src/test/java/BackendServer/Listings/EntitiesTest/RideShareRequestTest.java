@@ -28,6 +28,7 @@ public class RideShareRequestTest {
 		testListing = new RideShareRequest();
 		JSONObjectforFillFields = new JSONObject();
 		JSONObjectforFillFields.put(Constants.listingDataFieldId, 0);
+		JSONObjectforFillFields.put(Constants.listingDataFieldListingType, Constants.listingTypeNameRideShareRequest);
 		JSONObjectforFillFields.put(Constants.listingDataFieldCreateDate, createDate);
 		JSONObjectforFillFields.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectforFillFields.put(Constants.listingDataFieldCreator, 0);

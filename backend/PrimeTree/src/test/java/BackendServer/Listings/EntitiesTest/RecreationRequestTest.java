@@ -30,6 +30,7 @@ public class RecreationRequestTest {
 		
 		JSONObjectWithCorrectValues = new JSONObject();
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreator, 0);
@@ -47,6 +48,7 @@ public class RecreationRequestTest {
 		
 		JSONObjectWithWrongFreeTimeActivityCategory = new JSONObject();
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldCreator, 0);
