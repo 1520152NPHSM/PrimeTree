@@ -51,9 +51,13 @@ public class ReturningRecreationRequest extends RecreationRequest{
 		}
 		if(!listingData.isNull(Constants.listingDataFieldStartDate)){
 			this.setStartDate(new Date(listingData.getLong(Constants.listingDataFieldStartDate)));
+		}else{
+			this.setStartDate(null);
 		}
 		if(!listingData.isNull(Constants.listingDataFieldEndDate)){
 			this.setEndDate(new Date(listingData.getLong(Constants.listingDataFieldEndDate)));
+		}else{
+			this.setEndDate(null);
 		}
 		this.setRegularity(listingData.getString(Constants.listingDataFieldRegularity));
 	}

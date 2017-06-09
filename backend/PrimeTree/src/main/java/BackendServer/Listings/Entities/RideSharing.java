@@ -100,6 +100,8 @@ public class RideSharing extends Offering {
 		this.setFromLocation(listingData.getString(Constants.listingDataFieldFromLocation));
 		if(!listingData.isNull(Constants.listingDataFieldJourneyStops)){
 			this.setJourneyStops(SimpleMethods.parseJSONArrayToStringList(listingData.getJSONArray(Constants.listingDataFieldJourneyStops)));
+		}else{
+			this.setJourneyStops(new LinkedList<String>());
 		}
 		this.setToLocation(listingData.getString(Constants.listingDataFieldToLocation));
 		if(!listingData.isNull(Constants.listingDataFieldAvailableSeats)){

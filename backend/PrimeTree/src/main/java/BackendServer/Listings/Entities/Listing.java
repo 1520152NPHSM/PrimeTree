@@ -175,8 +175,12 @@ public abstract class Listing {
 		if(listingData.isNull(Constants.listingDataFieldCreateDate) ||	
 			listingData.isNull(Constants.listingDataFieldDescription) || 
 			listingData.isNull(Constants.listingDataFieldLocation) || 
-			listingData.isNull(Constants.listingDataFieldTitle)){
+			listingData.isNull(Constants.listingDataFieldTitle) || 
+			listingData.isNull(Constants.listingDataFieldListingType)){
 			throw new WrongFormatException("Missing required field(s)");
+		}
+		if(!this.getType().equals(listingData.get(Constants.listingDataFieldListingType))){
+			throw new WrongFormatException("Wrong type");
 		}
 		if(listingData.isNull(Constants.listingDataFieldActive)){
 			this.setActive(true);
@@ -190,6 +194,8 @@ public abstract class Listing {
 		this.setTitle(listingData.getString(Constants.listingDataFieldTitle));
 		if(!listingData.isNull(Constants.listingDataFieldDeadLine)){
 			this.setExpiryDate(new Date((long) listingData.getDouble(Constants.listingDataFieldDeadLine)));
+		}else{
+			this.setExpiryDate(null);
 		}
 	}
 	
@@ -211,7 +217,9 @@ public abstract class Listing {
 		json.put(Constants.listingDataFieldTitle, this.getTitle());
 		json.put(Constants.listingDataFieldListingType, this.getType());
 		json.put(Constants.listingDataFieldComments, this.commentsToJSONArray());
-		json.put(Constants.listingDataFieldDeadLine, this.getExpiryDate().getTime());
+		if(this.getExpiryDate()==null){
+			json.put(Constants.listingDataFieldDeadLine, this.getExpiryDate().getTime());			
+		}
 		return json;
 	}
 	

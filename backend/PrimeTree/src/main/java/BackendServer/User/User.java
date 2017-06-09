@@ -129,7 +129,7 @@ public class User implements UserDetails {
 		return employeeData.geteMail();
 	}
 
-	private String getLastName() {
+	public String getLastName() {
 		return employeeData.getNachname();
 	}
 

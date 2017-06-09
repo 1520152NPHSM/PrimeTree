@@ -58,9 +58,13 @@ public class BorrowRequest extends RequestListing{
 		super.fillFields(listingData, creator);
 		if(!listingData.isNull(Constants.listingDataFieldBorrowFromDate)){
 			this.setBorrowFromDate(new Date(listingData.getLong(Constants.listingDataFieldBorrowFromDate)));
+		}else{
+			this.setBorrowFromDate(null);
 		}
 		if(!listingData.isNull(Constants.listingDataFieldBorrowToDate)){
 			this.setBorrowToDate(new Date(listingData.getLong(Constants.listingDataFieldBorrowToDate)));
+		}else{
+			setBorrowToDate(null);
 		}
 	}
 	

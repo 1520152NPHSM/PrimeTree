@@ -103,9 +103,11 @@ public abstract class ListingObjectController<L extends Listing> {
 	public void edit(long listingId, JSONObject listingData)
 		throws ListingNotFoundException, WrongFormatException {
 		L editedListing = this.getListingById(listingId);
-		System.out.println("Before: " + editedListing.toString());
-		editedListing.fillFields(listingData, editedListing.getOwner());
-		System.out.println("After: " + editedListing.toString());
+		try{
+			editedListing.fillFields(listingData, editedListing.getOwner());			
+		}catch(JSONException exception){
+			throw new WrongFormatException(exception.getMessage());
+		}
 		listingRepository.save(editedListing);
 	}
 

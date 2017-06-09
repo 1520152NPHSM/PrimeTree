@@ -60,6 +60,8 @@ public class RideShareRequest extends RequestListing {
 		this.setToLocation(listingData.getString(Constants.listingDataFieldToLocation));
 		if(!listingData.isNull(Constants.listingDataFieldTravelDateAndTime)){
 			this.setTravelDateAndTime(new Date(listingData.getLong(Constants.listingDataFieldTravelDateAndTime)));
+		}else{
+			this.setTravelDateAndTime(null);
 		}
 	}
 	

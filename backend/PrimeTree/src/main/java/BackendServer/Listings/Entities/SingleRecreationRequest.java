@@ -29,6 +29,8 @@ public class SingleRecreationRequest extends RecreationRequest{
 		super.fillFields(listingData, creator);
 		if(!listingData.isNull(Constants.listingDataFieldHappeningDate)){
 			this.setHappeningDate(new Date(listingData.getLong(Constants.listingDataFieldHappeningDate)));
+		}else{
+			this.setHappeningDate(null);
 		}
 	}
 
