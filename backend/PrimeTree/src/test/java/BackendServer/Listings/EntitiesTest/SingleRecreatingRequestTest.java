@@ -32,6 +32,7 @@ public class SingleRecreatingRequestTest {
 		
 		JSONObjectforTesting = new JSONObject();
 		JSONObjectforTesting.put(Constants.listingDataFieldId, 0);
+		JSONObjectforTesting.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSingleRecreationRequest);
 		JSONObjectforTesting.put(Constants.listingDataFieldCreateDate, createDate);
 		JSONObjectforTesting.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectforTesting.put(Constants.listingDataFieldCreator, 0);

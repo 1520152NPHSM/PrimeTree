@@ -27,6 +27,7 @@ public class BorrowRequestTest {
 		borrowRequestTest = new BorrowRequest();
 		initialiseJSONOject = new JSONObject();
 		initialiseJSONOject.put(Constants.listingDataFieldId, 0);
+		initialiseJSONOject.put(Constants.listingDataFieldListingType, Constants.listingTypeNameBorrowRequest);
 		initialiseJSONOject.put(Constants.listingDataFieldActive, true);
 		initialiseJSONOject.put(Constants.listingDataFieldCreateDate, new Date().getTime());
 		initialiseJSONOject.put(Constants.listingDataFieldCreator, 0);

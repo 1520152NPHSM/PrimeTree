@@ -32,6 +32,7 @@ public class PurchaseRequestTest {
 		
 		JSONObjectWithCorrectValues = new JSONObject();
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreator, 0);
@@ -46,6 +47,7 @@ public class PurchaseRequestTest {
 		
 		JSONObjectWithWrongCondition = new JSONObject();
 		JSONObjectWithWrongCondition.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithWrongCondition.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
 		JSONObjectWithWrongCondition.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithWrongCondition.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithWrongCondition.put(Constants.listingDataFieldCreator, 0);

@@ -52,6 +52,7 @@ public class ListingTest {
 		testListing = new SellItem();
 		initialiseJSONObject = new JSONObject();
 		initialiseJSONObject.put(Constants.listingDataFieldId, 0);
+		initialiseJSONObject.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
 		initialiseJSONObject.put(Constants.listingDataFieldCreateDate, createDate);
 		initialiseJSONObject.put(Constants.listingDataFieldDeadLine, deadLine);
 		initialiseJSONObject.put(Constants.listingDataFieldCreator, 0);

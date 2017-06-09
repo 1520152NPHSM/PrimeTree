@@ -96,11 +96,11 @@ public class ListingRestControllerTest{
     	commentRequestBodyString = commentRequestBody.toString();
     	// Inputstreams for picture uploads
 		try {
-			inputFileStream = new BufferedInputStream(new FileInputStream( "/Users/markbeckmann/git/primetree/backend/PrimeTree/src/test/java/BackendServer/ListingsTest/TestImage.png"));
-			inputFileStreamZwei = new BufferedInputStream( new FileInputStream("/Users/markbeckmann/git/primetree/backend/PrimeTree/src/test/java/BackendServer/ListingsTest/bild2.jpg"));
-			inputFileStreamDrei = new BufferedInputStream( new FileInputStream("/Users/markbeckmann/git/primetree/backend/PrimeTree/src/test/java/BackendServer/ListingsTest/bild3.JPG"));
-			inputFileStreamVier = new BufferedInputStream( new FileInputStream("/Users/markbeckmann/git/primetree/backend/PrimeTree/src/test/java/BackendServer/ListingsTest/bild4.PNG"));
-			inputFileStreamFuenf = new BufferedInputStream( new FileInputStream("/Users/markbeckmann/git/primetree/backend/PrimeTree/src/test/java/BackendServer/ListingsTest/test.txt"));
+			inputFileStream = new BufferedInputStream(new FileInputStream( ConstantsForTests.fileEins));
+			inputFileStreamZwei = new BufferedInputStream( new FileInputStream(ConstantsForTests.fileZwei));
+			inputFileStreamDrei = new BufferedInputStream( new FileInputStream(ConstantsForTests.fileDrei));
+			inputFileStreamVier = new BufferedInputStream( new FileInputStream(ConstantsForTests.fileVier));
+			inputFileStreamFuenf = new BufferedInputStream( new FileInputStream(ConstantsForTests.fileFünf));
 
 			file = new MockMultipartFile("file", "testImage.png", null, inputFileStream);
 			fileZwei = new MockMultipartFile("file2", "bild2.jpg", null, inputFileStreamZwei);
@@ -144,16 +144,6 @@ public class ListingRestControllerTest{
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
-	/**
-	 * Test for createListing with null String
-	 * We wont test more wrong formats because the tests for that are made in ListingTest
-	 */
-	@Test
-	public void createListingTestWithNullString(){
-		request = new MockHttpServletRequest("POST", "listing");
-		String result = testRESTController.createListing(null, request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
-	}
 	
 	
 	//------------------------------ getListing --------------------------------
@@ -429,7 +419,7 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithWrongListingID(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
 		testRESTController.listingMainImageUpload(-1, request, response, file);
-		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
 	/**
@@ -439,7 +429,7 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithWrongFile(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
 		testRESTController.listingMainImageUpload(0, request, response, fileFuenf);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	/**
 	 * Test listingMainImageUpload with null file
@@ -448,7 +438,7 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithNullFile(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main.image/{id}");
 		testRESTController.listingMainImageUpload(0, request, response, null);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
 	//--------------------------- galleryImageUpload ------------------------------------
@@ -519,7 +509,7 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithWrongFile(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
 		testRESTController.galleryImageUpload(0,0, request, response, fileFuenf);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	/**
 	 * Test galleryImageUpload with null file
@@ -528,7 +518,7 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithNullFile(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main.image/{id}");
 		testRESTController.galleryImageUpload(0,0, request, response, null);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
 	//--------------------------------------- listingGalleryChange ---------------------------------
@@ -596,7 +586,7 @@ public class ListingRestControllerTest{
     	String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
 		testRESTController.galleryImageUpload(0, 0, request, response, fileFuenf);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
 	/**
@@ -633,7 +623,7 @@ public class ListingRestControllerTest{
     	String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
 		testRESTController.galleryImageUpload(0, 0, request, response, null);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
 	//-------------------------------------- listingGalleryDelete -------------------------------

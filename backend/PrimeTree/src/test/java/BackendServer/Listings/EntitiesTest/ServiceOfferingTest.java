@@ -27,6 +27,7 @@ public class ServiceOfferingTest {
 		testListing = new ServiceOffering();
 		initialiseJSONObject = new JSONObject();
 		initialiseJSONObject.put(Constants.listingDataFieldId, 0);
+		initialiseJSONObject.put(Constants.listingDataFieldListingType, Constants.listingTypeNameServiceOffering);
 		initialiseJSONObject.put(Constants.listingDataFieldCreateDate, createDate);
 		initialiseJSONObject.put(Constants.listingDataFieldDeadLine, deadLine);
 		initialiseJSONObject.put(Constants.listingDataFieldCreator, 0);

@@ -38,6 +38,7 @@ public class RideSharingTest {
 	linkedListForStops.add(stop2);
 	
 	obj1.put(Constants.responseFieldNewListingId, 0);
+	obj1.put(Constants.listingDataFieldListingType, Constants.listingTypeNameRideSharing);
 	obj1.put(Constants.listingDataFieldActive, true);
 	obj1.put(Constants.listingDataFieldCreateDate, 1);
 	obj1.put(Constants.listingDataFieldCreator, 0);

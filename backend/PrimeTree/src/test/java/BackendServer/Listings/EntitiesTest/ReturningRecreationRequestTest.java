@@ -31,6 +31,7 @@ public class ReturningRecreationRequestTest {
 		
 		JSONObjectWithCorrectValues = new JSONObject();
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCreator, 0);
@@ -47,6 +48,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldRegularity, "Daily");
 		
 		JSONObjectWithBadRegularity = new JSONObject();
+		JSONObjectWithBadRegularity.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldId, 0);
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldDeadLine, deadLine);
@@ -65,6 +67,7 @@ public class ReturningRecreationRequestTest {
 		
 		JSONObjectWithNoStartDate = new JSONObject();
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithNoStartDate.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldCreator, 0);
@@ -81,6 +84,7 @@ public class ReturningRecreationRequestTest {
 		
 		JSONObjectWithNoEndDate = new JSONObject();
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldId, 0);
+		JSONObjectWithNoEndDate.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldDeadLine, deadLine);
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldCreator, 0);
@@ -96,6 +100,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldRegularity, "Daily");
 		
 		JSONObjectWithNoRegularity = new JSONObject();
+		JSONObjectWithNoRegularity.put(Constants.listingDataFieldListingType, Constants.listingTypeNameReturningRecreationRequest);
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldId, 0);
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldCreateDate, createOne);
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldDeadLine, deadLine);

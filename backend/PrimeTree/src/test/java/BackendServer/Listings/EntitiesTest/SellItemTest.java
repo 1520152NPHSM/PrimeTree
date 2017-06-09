@@ -35,6 +35,7 @@ public class SellItemTest {
 		imageGallery.add(imagepath2);
 		obj1 = new JSONObject();
 		obj1.put(Constants.listingDataFieldId, 0);
+		obj1.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
 		obj1.put(Constants.listingDataFieldActive, true);
 		obj1.put(Constants.listingDataFieldCreateDate, 1);
 		obj1.put(Constants.listingDataFieldCreator, 0);
