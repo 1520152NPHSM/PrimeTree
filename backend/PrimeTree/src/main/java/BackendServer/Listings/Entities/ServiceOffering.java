@@ -1,5 +1,7 @@
 package BackendServer.Listings.Entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,24 +24,28 @@ import BackendServer.Listings.SimpleMethods;
 @PrimaryKeyJoinColumn(referencedColumnName="id")
 public class ServiceOffering extends Offering {
 
-	private String[] imageGallery;
+	@ElementCollection
+	private List<String> imageGallery;
 	private String picture;
 	private double price;
 	
 	public ServiceOffering(){
 		this.setType(Constants.listingTypeNameServiceOffering);
 		if(this.getImageGallery()==null){
-			this.setImageGallery(new String[Constants.numberOfImagesPerGallery]);
+			this.setImageGallery(new ArrayList<String>());
+			for(int counter=0;counter<Constants.numberOfImagesPerGallery;counter++){
+				this.getImageGallery().add(null);
+			}
 		}
 	}
 
 	@Override
-	public String[] getImageGallery() {
+	public List<String> getImageGallery() {
 		return imageGallery;
 	}
 
-	public void setImageGallery(String[] imageGallery) {
-		this.imageGallery = imageGallery;
+	public void setImageGallery(ArrayList<String> imageGallery) {
+		this.imageGallery =imageGallery;
 	}
 
 	public String getPicture() {
@@ -85,9 +91,9 @@ public class ServiceOffering extends Offering {
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldPrice, this.getPrice());
-		json.accumulate(Constants.listingDataFieldImageGallery, new JSONArray(this.getImageGallery()));
-		json.accumulate(Constants.listingDataFieldPicture, this.getPicture());
+		json.put(Constants.listingDataFieldPrice, this.getPrice());
+		json.put(Constants.listingDataFieldImageGallery, new JSONArray(this.getImageGallery()));
+		json.put(Constants.listingDataFieldPicture, this.getPicture());
 		return json;
 	}
 	

@@ -60,6 +60,8 @@ public class RideShareRequest extends RequestListing {
 		this.setToLocation(listingData.getString(Constants.listingDataFieldToLocation));
 		if(!listingData.isNull(Constants.listingDataFieldTravelDateAndTime)){
 			this.setTravelDateAndTime(new Date(listingData.getLong(Constants.listingDataFieldTravelDateAndTime)));
+		}else{
+			this.setTravelDateAndTime(null);
 		}
 	}
 	
@@ -67,9 +69,9 @@ public class RideShareRequest extends RequestListing {
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldFromLocation, this.getFromLocation());
-		json.accumulate(Constants.listingDataFieldToLocation, this.getToLocation());
-		json.accumulate(Constants.listingDataFieldTravelDateAndTime, this.getTravelDateAndTime());
+		json.put(Constants.listingDataFieldFromLocation, this.getFromLocation());
+		json.put(Constants.listingDataFieldToLocation, this.getToLocation());
+		json.put(Constants.listingDataFieldTravelDateAndTime, this.getTravelDateAndTime());
 		return json;
 	}
 

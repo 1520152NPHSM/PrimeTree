@@ -50,9 +50,10 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 		
 		/**This method), which is called by performActionOnAlllistingControllers(...),
 		 * performs a custom method with listingId on listingObjectController
-		 * @throws WrongFormatException 
-		 * @throws NoImageGallerySupportedException */
-		public abstract Object performAction(long listingId) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException;
+		 * @throws WrongFormatException If the overridden Method tries to create or edit a listing with a JSONObjectin the wrong format
+		 * @throws NoImageGallerySupportedException If the overridden Method tries to make some stuff with the imageGallery of a listing but fails because the listing doesn't support an imageGallery
+		 * @throws MainImageNotSupportedException If the overridden Method tries to make some stuff with the mainImage of a listing but fails because the listing doesn't support a mainImage*/
+		public abstract Object performAction(long listingId) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException, MainImageNotSupportedException;
 		
 		public void setListingObjectController(ListingObjectController listingObjectController) {
 			this.listingObjectController = listingObjectController;
@@ -82,6 +83,9 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 			return null;
 		} catch (NoImageGallerySupportedException e) {
 			System.out.println("A NoImageGalleryException in the get method appeared. Normally this does not happen.");
+			return null;
+		} catch (MainImageNotSupportedException e) {
+			System.out.println("A MainImageNotSupportedException in the get method appeared. Normally this does not happen.");
 			return null;
 		}
 	}
@@ -139,16 +143,18 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 			System.out.println("A WrongFormatException in the delete method appeared. Normally this does not happen.");
 		} catch (NoImageGallerySupportedException e) {
 			System.out.println("A NoImageGallerySupportedException in the delete method appeared. Normally this does not happen.");
+		} catch (MainImageNotSupportedException e) {
+			System.out.println("A (MainImageNotSupportedException in the get method appeared. Normally this does not happen.");
 		}
 	}
 	
 	/**This method tries action.performAction(listingId) on all listingControllers by 
 	 * continuing if one listingController doesn't find the listing
 	 * throws ListingNotFoundException if the listing with id listingId does not exist
-	 * @throws WrongFormatException 
-	 * @throws NoImageGallerySupportedException if the action tries to add a picturepath to the gallery 
-	 * but the type of the listing doesn't support an imageGallery*/
-	private Object performActionOnAlllistingControllers(long listingId, ListingObjectControllerActionPerformer action) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException{
+	 * @throws WrongFormatException If the performAction Method tries to create or edit a listing with a JSONObjectin the wrong format
+		 * @throws NoImageGallerySupportedException If the performAction Method tries to make some stuff with the imageGallery of a listing but fails because the listing doesn't support an imageGallery
+		 * @throws MainImageNotSupportedException If the performAction Method tries to make some stuff with the mainImage of a listing but fails because the listing doesn't support a mainImage*/
+	private Object performActionOnAlllistingControllers(long listingId, ListingObjectControllerActionPerformer action) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException, MainImageNotSupportedException{
 		for(int controllerIndex=0;controllerIndex<listingControllers.length;controllerIndex++){
 			try{
 				action.setListingObjectController(listingControllers[controllerIndex]);
@@ -182,6 +188,8 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 			});
 		} catch (NoImageGallerySupportedException e) {
 			System.out.println("A WrongFormatException in the edit method appeared. Normally this does not happen.");
+		} catch (MainImageNotSupportedException e) {
+			System.out.println("A (MainImageNotSupportedException in the get method appeared. Normally this does not happen.");
 		}
 	}
 
@@ -213,12 +221,17 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 			System.out.println("A WrongFormatException in the comment method appeared. Normally this does not happen.");
 		} catch (NoImageGallerySupportedException e) {
 			System.out.println("A NoImageGallerySupportedException in the comment method appeared. Normally this does not happen.");
+		} catch (MainImageNotSupportedException e) {
+			System.out.println("A (MainImageNotSupportedException in the comment method appeared. Normally this does not happen.");
 		}
 	}
 
 	@Override
-	public void deleteComment(int commentId) throws CommentNotFoundException{
-		commentRepository.delete((long) commentId);
+	public void deleteComment(long commentId) throws CommentNotFoundException{
+		if(commentRepository.findOne(commentId)==null){
+			throw new CommentNotFoundException();
+		}
+		commentRepository.delete(commentId);
 	}
 
 	@Override
@@ -290,16 +303,16 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 		while(listingIterator.hasNext()){
 			Listing checkedListing=listingIterator.next();
 			if(!listingFilterer.checkIfListingMatches(checkedListing)){
-				resultSet.remove(checkedListing);
+				listingIterator.remove();
 			}else if(checkedListing.getPrice()<lowestPriceFound){
 				lowestPriceFound=checkedListing.getPrice();
 			}else if(checkedListing.getPrice()>highestPriceFound){
 				highestPriceFound=checkedListing.getPrice();
 			}
 		}
-		int pageBeginning=(page-1)*Constants.pageSize,
-				pageEnd=page*Constants.pageSize;
 		Listing[] resultArray=SimpleMethods.parseObjectArrayToListingArray(resultSet.toArray());
+		int pageBeginning=(page-1)*Constants.pageSize,
+				pageEnd=Integer.min(page*Constants.pageSize, Integer.max(resultArray.length-1, 0)) ;
 		Arrays.sort(resultArray, this.createListingComparator(sort));
 		statistics.setPages((resultSet.size()-1)/50);
 		statistics.setPrice_max(highestPriceFound);
@@ -415,29 +428,47 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 
 	@Override
 	public void uploadMainImage(byte[] imageData, long listingId, String originalFilename) throws IOException, ListingNotFoundException, MainImageNotSupportedException{
-		String localFilePath=makeLocalMainImagePath(listingId, originalFilename);
-		uploadAnyImage(imageData, localFilePath);
-		this.getListingById(listingId).setPicture(getPublicFilePathFromLocal(localFilePath));
+		final String localPath="src/main/webapp/resources/assets/listings/" + listingId + "/";
+		final String localFileName=makeLocalMainImagePath(listingId, originalFilename);
+		uploadAnyImage(imageData, localPath, localFileName);
+		this.getListingById(listingId).setPicture(getPublicFilePathFromLocal(localPath+localFileName));
+		try {
+			this.performActionOnAlllistingControllers(listingId, new ListingObjectControllerActionPerformer(){
+
+				@Override
+				public Object performAction(long listingId)
+						throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException, MainImageNotSupportedException {
+					this.listingObjectController.setMainImageOnListing(listingId, localPath+localFileName);
+					return null;
+				}
+				
+			});
+		} catch (WrongFormatException e) {
+			System.out.println("A WrongFormatExceptionin the get method appeared. Normally this does not happen.");
+		} catch (NoImageGallerySupportedException e) {
+			System.out.println("A NoImageGallerySupportedException in the get method appeared. Normally this does not happen.");
+		}
 	}
 
 	@Override
 	public String uploadTemporaryImage(byte[] imageData, String originalFilename) throws IOException {
-		String localFilePath=makeUnredundantLocalTemporaryFilePath(originalFilename);
-		uploadAnyImage(imageData, localFilePath);
-		return getPublicFilePathFromLocal(localFilePath);
+		String localPath="src/main/webapp/resources/temporary/";
+		String localFileName=makeUnredundantTemporaryFileName(localPath,originalFilename);
+		uploadAnyImage(imageData, localPath, localFileName);
+		return getPublicFilePathFromLocal(localPath+localFileName);
 	}
 	
-	private void uploadAnyImage(byte[] imageData, String localFilePath) throws IOException{
+	private void uploadAnyImage(byte[] imageData, String localPath, String localFileName) throws IOException{
 		try{
-			Files.deleteIfExists(Paths.get(localFilePath));
-			Files.createDirectories(Paths.get(localFilePath));
-			Files.createFile(Paths.get(localFilePath));
+			Files.deleteIfExists(Paths.get(localPath+localFileName));
+			Files.createDirectories(Paths.get(localPath));
+			Files.createFile(Paths.get(localPath+localFileName));
 		}catch(FileAlreadyExistsException e){
 			//do nothing and continue
 		}catch(AccessDeniedException shouldNotBeThrown){
 			System.out.println(shouldNotBeThrown.getMessage());
 		}
-		FileOutputStream outputStream=new FileOutputStream(localFilePath);
+		FileOutputStream outputStream=new FileOutputStream(localPath+localFileName);
 		outputStream.write(imageData);
 		outputStream.close();
 	}
@@ -446,7 +477,9 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	
 	private void deleteAnyImage(String localFilePath){
 		try {
-			Files.deleteIfExists(Paths.get(localFilePath));
+			if(localFilePath!=null){
+				Files.deleteIfExists(Paths.get(localFilePath));
+			}
 		} catch (IOException e) {
 			System.out.println("Failed to delete image " + localFilePath);
 			e.printStackTrace();
@@ -468,20 +501,27 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	@Override
 	public void putImageInGallery(byte[] imageData, int listingId,final int galleryIndex, String originalFilename) throws ListingNotFoundException, NoImageGallerySupportedException, IOException, GalleryIndexOutOfLimitException {
 		if(galleryIndex<Constants.numberOfImagesPerGallery){
-			final String localFilePath=makeImageInGalleryPathName(listingId, galleryIndex, originalFilename);
-			uploadAnyImage(imageData, localFilePath);
-			this.performActionOnAlllistingControllers(listingId, new ListingObjectControllerActionPerformer(){
+			final String localPath="/resources/assets/listings/" + listingId + "/gallery/";
+			final String fileName=makeImageInGalleryPathName(galleryIndex, originalFilename);
+			uploadAnyImage(imageData, localPath, fileName);
+			try {
+				this.performActionOnAlllistingControllers(listingId, new ListingObjectControllerActionPerformer(){
 
-				String publicFilePath=getPublicFilePathFromLocal(localFilePath);
-				int galleryIndexInPerformer=galleryIndex;
+					String publicFilePath=getPublicFilePathFromLocal(localPath+fileName);
+					int galleryIndexInPerformer=galleryIndex;
+						
+					@Override
+					public Object performAction(long listingId) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException {
+						this.listingObjectController.setImagePath(listingId, galleryIndexInPerformer, publicFilePath);
+						return null;
+					}
 					
-				@Override
-				public Object performAction(long listingId) throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException {
-					this.listingObjectController.setImagePath(listingId, galleryIndexInPerformer, publicFilePath);
-					return null;
-				}
-				
-			});
+				});
+			} catch (WrongFormatException e) {
+				System.out.println("A WrongFormatException in the putImageInaGallery method appeared. Normally this does not happen.");
+			} catch (MainImageNotSupportedException e) {
+				System.out.println("A (MainImageNotSupportedException in the putImageInGallery method appeared. Normally this does not happen.");
+			}
 		}else{
 			throw new GalleryIndexOutOfLimitException();
 		}
@@ -489,15 +529,14 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 
 	/**This method creates a new unredundant public pathname for a new image for a gallery
 	 * @param listingId id of the listing the gallery belongs to
-	 * @param galleryIndex 
 	 * @param originalFilename the original filename of the image
 	 * @return the new public pathname
 	 * @throws IOException if the pathname shows that the file was no image
 	 * @throws NoImageGallerySupportedException if the listing doesn't support a main image
 	 * @throws ListingNotFoundException
 	 */
-	private String makeImageInGalleryPathName(int listingId,  int galleryIndex, String originalFilename) throws IOException, NoImageGallerySupportedException, ListingNotFoundException {
-		return "/resources/assets/listings/" + listingId + "/gallery/" + galleryIndex + this.getImageFileTypeEnding(originalFilename);
+	private String makeImageInGalleryPathName(int galleryIndex,  String originalFilename) throws IOException, NoImageGallerySupportedException, ListingNotFoundException {
+		return galleryIndex + this.getImageFileTypeEnding(originalFilename);
 	}
 
 	@Override
@@ -510,7 +549,7 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 				@Override
 				public Object performAction(long listingId)
 						throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException {
-					publicFilePath=listingObjectController.getListingById(listingId).getImageGallery()[galleryIndex];
+					publicFilePath=listingObjectController.getListingById(listingId).getImageGallery().get(galleryIndex);
 					listingObjectController.deleteGalleryImage(listingId, galleryIndex);
 					return publicFilePath;
 				}
@@ -518,20 +557,22 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 			});
 			deleteAnyImage(getLocalPathFromPublicPath(publicFilePath));
 		} catch (WrongFormatException e) {
-			System.out.println("A WrongFormatException in the comment method appeared. Normally this does not happen.");
+			System.out.println("A WrongFormatException in the deleteImageInGallery method appeared. Normally this does not happen.");
+		} catch (MainImageNotSupportedException e) {
+			System.out.println("A (MainImageNotSupportedException in the deleteImageInGallery method appeared. Normally this does not happen.");
 		}
 	}
 
-	private String makeUnredundantLocalTemporaryFilePath(String originalFilename) throws IOException {
+	private String makeUnredundantTemporaryFileName(String localPath, String originalFilename) throws IOException {
 		String fileName=makePotentiallyRedundantLocalTemporaryFilePath(originalFilename);
-		while(Files.exists(Paths.get(fileName))){
+		while(Files.exists(Paths.get(localPath+fileName))){
 			fileName=makePotentiallyRedundantLocalTemporaryFilePath(originalFilename);
 		}
 		return fileName;
 	}
 
 	private String makePotentiallyRedundantLocalTemporaryFilePath(String originalFilename) throws IOException {
-		return "src/main/webapp/resources/temporary/" + (long) Math.random()*Long.MAX_VALUE + getImageFileTypeEnding(originalFilename);
+		return (long) Math.random()*Long.MAX_VALUE + getImageFileTypeEnding(originalFilename);
 	}
 
 	/** This method creates the local filepath for file with the type of the originalFilename belonging to the 
@@ -547,7 +588,7 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	 * @throws ListingNotFoundException If no listing with the id listingId exists
 	 * @throws MainImageNotSupportedException if the main image does not support a main-image*/
 	private String makeLocalMainImagePath(long listingId, String originalFilename) throws IOException, MainImageNotSupportedException, ListingNotFoundException {
-		return "src/main/webapp/resources/assets/listings/" + listingId + "/main-image" + getImageFileTypeEnding(originalFilename);
+		return "main-image" + getImageFileTypeEnding(originalFilename);
 	}
 	
 	/** This method creates the local directory-path for a file belonging to the listing with id listingId

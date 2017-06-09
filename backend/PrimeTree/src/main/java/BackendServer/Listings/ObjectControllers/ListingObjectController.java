@@ -103,9 +103,11 @@ public abstract class ListingObjectController<L extends Listing> {
 	public void edit(long listingId, JSONObject listingData)
 		throws ListingNotFoundException, WrongFormatException {
 		L editedListing = this.getListingById(listingId);
-		System.out.println("Before: " + editedListing.toString());
-		editedListing.fillFields(listingData, editedListing.getOwner());
-		System.out.println("After: " + editedListing.toString());
+		try{
+			editedListing.fillFields(listingData, editedListing.getOwner());			
+		}catch(JSONException exception){
+			throw new WrongFormatException(exception.getMessage());
+		}
 		listingRepository.save(editedListing);
 	}
 
@@ -151,7 +153,13 @@ public abstract class ListingObjectController<L extends Listing> {
 	 */
 	public void deleteGalleryImage(long listingId, int galleryIndex) throws NoImageGallerySupportedException, ListingNotFoundException {
 		L editedListing=this.getListingById(listingId);
-		editedListing.getImageGallery()[galleryIndex]=null;
+		editedListing.getImageGallery().set(galleryIndex, null);
+		this.listingRepository.save(editedListing);
+	}
+
+	public void setMainImageOnListing(long listingId, String picturePath) throws ListingNotFoundException, MainImageNotSupportedException {
+		L editedListing=this.getListingById(listingId);
+		editedListing.setPicture(picturePath);
 		this.listingRepository.save(editedListing);
 	}
 	

@@ -1,5 +1,6 @@
 package BackendServer.Listings.Entities;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,13 +25,17 @@ import BackendServer.Listings.SimpleMethods;
 public class SellItem extends Offering{
 	private double price;
 	private String picture;
-	private String[] imageGallery;
+	@ElementCollection
+	public List<String> imageGallery;
 	private String itemCondition;
 	
 	public SellItem(){
 		this.setType(Constants.listingTypeNameSellItem);
 		if(this.getImageGallery()==null){
-			this.setImageGallery(new String[Constants.numberOfImagesPerGallery]);
+			this.setImageGallery(new ArrayList<String>());
+			for(int counter=0;counter<Constants.numberOfImagesPerGallery;counter++){
+				this.getImageGallery().add(null);
+			}
 		}
 	}
 	
@@ -47,17 +52,17 @@ public class SellItem extends Offering{
 		return price;
 	}
 
-	public void setPrice(double d) {
-		this.price = d;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	@Override
-	public String[] getImageGallery() {
+	public List<String> getImageGallery() {
 		return imageGallery;
 	}
 
-	public void setImageGallery(String[] imageGallery) {
-		this.imageGallery = imageGallery;
+	public void setImageGallery(ArrayList<String> imageGallery) {
+		this.imageGallery =imageGallery;
 	}
 
 	/* (non-Javadoc)
@@ -74,6 +79,9 @@ public class SellItem extends Offering{
 		if(!Constants.allItemConditions.contains(listingData.getString(Constants.listingDataFieldCondition))){
 			throw new WrongFormatException("This condition does not exist");
 		}
+		if(listingData.getDouble(Constants.listingDataFieldPrice)<0){
+			throw new WrongFormatException("Negative Price");
+		}
 		this.setPrice(listingData.getDouble(Constants.listingDataFieldPrice));
 		this.setItemCondition(listingData.getString(Constants.listingDataFieldCondition));
 	}
@@ -88,10 +96,10 @@ public class SellItem extends Offering{
 	 */
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldCondition, this.getItemCondition());
-		json.accumulate(Constants.listingDataFieldPrice, this.getPrice());
-		json.accumulate(Constants.listingDataFieldPicture, this.getPicture());
-		json.accumulate(Constants.listingDataFieldImageGallery, new JSONArray(this.getImageGallery()));
+		json.put(Constants.listingDataFieldCondition, this.getItemCondition());
+		json.put(Constants.listingDataFieldPrice, this.getPrice());
+		json.put(Constants.listingDataFieldPicture, this.getPicture());
+		json.put(Constants.listingDataFieldImageGallery, new JSONArray(this.getImageGallery()));
 		return json;
 	}
 

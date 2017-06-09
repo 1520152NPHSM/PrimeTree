@@ -112,7 +112,7 @@ public interface PersistenceAdapter {
 	/**This method completely deletes the comment with id commentId from the database
 	 * @param commentId id of the comment that should be deleted
 	 */
-	public void deleteComment(int commentId) throws CommentNotFoundException;
+	public void deleteComment(long commentId) throws CommentNotFoundException;
 	
 	/**This method returns a page of listings that match the filterOptions and writes the statistics 
 	 * into the statistics-parameter

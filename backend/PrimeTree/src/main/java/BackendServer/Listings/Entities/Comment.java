@@ -73,10 +73,10 @@ public class Comment {
 	 */
 	public JSONObject toJSON() {
 		JSONObject commentAsJSON=new JSONObject();
-		commentAsJSON.accumulate(Constants.commentDataFieldCommentId, this.getId());
-		commentAsJSON.accumulate(Constants.commentDataFieldUserId, this.getAuthorId());
-		commentAsJSON.accumulate(Constants.commentDataFieldDate, this.getCreateDate());
-		commentAsJSON.accumulate(Constants.commentDataFieldMessage, this.getText());
+		commentAsJSON.put(Constants.commentDataFieldCommentId, this.getId());
+		commentAsJSON.put(Constants.commentDataFieldUserId, this.getAuthorId());
+		commentAsJSON.put(Constants.commentDataFieldDate, this.getCreateDate());
+		commentAsJSON.put(Constants.commentDataFieldMessage, this.getText());
 		return commentAsJSON;
 	}
 

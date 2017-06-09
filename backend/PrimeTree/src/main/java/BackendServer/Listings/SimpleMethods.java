@@ -94,19 +94,6 @@ public class SimpleMethods {
 		return stringCollection;
 	}
 
-	/**This method parses an array of Listing to an JSONArray with all listings parsed to 
-	 * JSONObject with the listing.toJSON() method
-	 * @param listingArray the unparsed array of listing
-	 * @return the parsed JSONArray
-	 */
-	public static Collection parseListingArrayToJSONArray(Listing[] listingArray) {
-		JSONArray jsonArray=new JSONArray(listingArray.length);
-		for(int index=0;index<listingArray.length;index++){
-			jsonArray.put(index, listingArray[index].toJSON());
-		}
-		return null;
-	}
-
 	/**This method parses a String representing a number to an int
 	 * @param substring the String
 	 * @return the int

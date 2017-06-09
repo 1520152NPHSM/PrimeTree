@@ -51,9 +51,9 @@ public class PurchaseRequest extends RequestListing{
 	
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldCondition, this.getItemCondition());
-		json.accumulate(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
-		json.accumulate(Constants.listingDataFieldPicture, this.getPicture());
+		json.put(Constants.listingDataFieldCondition, this.getItemCondition());
+		json.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
+		json.put(Constants.listingDataFieldPicture, this.getPicture());
 		return json;
 	}
 

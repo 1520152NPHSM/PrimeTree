@@ -195,7 +195,7 @@ public class ListingRESTController {
 	@PreAuthorize("hasPermission(#id, 'listing', 'owner') or hasAuthority('ADMIN')")
     public @ResponseBody void activateListing(@PathVariable(value="id") final int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
-			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().accumulate(Constants.listingDataFieldActive, true));
+			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().put(Constants.listingDataFieldActive, true));
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (WrongFormatException e) {
@@ -214,7 +214,7 @@ public class ListingRESTController {
 	@PreAuthorize("hasPermission(#id,'listing', 'owner') or hasAuthority('ADMIN')")
     public @ResponseBody void deactivateListing(@PathVariable(value="id") final int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
-			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().accumulate(Constants.listingDataFieldActive, false));
+			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().put(Constants.listingDataFieldActive, false));
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (WrongFormatException e) {
@@ -271,8 +271,11 @@ public class ListingRESTController {
 	public @ResponseBody String uploadTemporaryImage(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") final MultipartFile file){
 		JSONObject result=new JSONObject();
 		try {
+			if(file==null){
+				throw new IOException();
+			}
 			String publicPath=persistenceAdapter.uploadTemporaryImage(file.getBytes(), file.getOriginalFilename());
-			result.accumulate("imagePath", publicPath);
+			result.put("imagePath", publicPath);
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
@@ -315,6 +318,9 @@ public class ListingRESTController {
 	public @ResponseBody void listingMainImageUpload(@PathVariable(value="id") final int listingId, 
 			HttpServletRequest request, HttpServletResponse response, @RequestParam("file") final MultipartFile file){
 				try {
+					if(file==null){
+						throw new IOException();
+					}
 					persistenceAdapter.uploadMainImage(file.getBytes(), listingId, file.getOriginalFilename());
 				} catch (IOException e) {
 					response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
@@ -340,6 +346,9 @@ public class ListingRESTController {
 	public @ResponseBody void galleryImageUpload(@PathVariable(value="listingId") final int listingId, @PathVariable(value="galleryIndex") final int galleryIndex, 
 	HttpServletRequest request, HttpServletResponse response, @RequestParam("file") final MultipartFile file){
 		try {
+			if(file==null){
+				throw new IOException();
+			}
 			persistenceAdapter.putImageInGallery(file.getBytes(), listingId, galleryIndex, file.getOriginalFilename());
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -407,10 +416,10 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value= "listings/search", method=RequestMethod.GET)
 	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		if(query.length()<2){
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return "";
-			}
+//		if(query.length()<2){
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return "";
+//			}
 		ListingSearchStatistics statistics=new ListingSearchStatistics();
 		Listing[] resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
 		JSONObject result=this.createPage(resultListings, statistics);
@@ -530,7 +539,7 @@ public class ListingRESTController {
 	public @ResponseBody String getOwnListings(HttpServletRequest request, HttpServletResponse response){
 		Listing[] resultListings=persistenceAdapter.getListingsFromUser(getUserId());
 		JSONObject result=new JSONObject();
-		result.put(Constants.listingSearchResultFieldListings, SimpleMethods.parseListingArrayToJSONArray(resultListings));
+		result.put(Constants.listingSearchResultFieldListings, new JSONArray(resultListings));
 		this.addUserImagePropertyIntoAllComments(result.getJSONArray("listings"));
 		return result.toString();
 	}
@@ -562,8 +571,12 @@ public class ListingRESTController {
 	 */
 	private JSONObject createPage(Listing[] resultListings, ListingSearchStatistics statistics) {
 		JSONObject page=new JSONObject();
-		page.put(Constants.listingSearchResultFieldListings, SimpleMethods.parseListingArrayToJSONArray(resultListings));
-		this.addUserImagePropertyIntoAllComments(page.getJSONArray("listings"));
+		JSONArray listingArray=new JSONArray(resultListings.clone());
+		for(int jsonArrayIndex=0;jsonArrayIndex<listingArray.length();jsonArrayIndex++){
+			listingArray.put(jsonArrayIndex, resultListings[jsonArrayIndex].toJSON());
+		}
+		this.addUserImagePropertyIntoAllComments(listingArray);
+		page.put(Constants.listingSearchResultFieldListings, listingArray);
 		page.put(Constants.listingSearchResultFieldPrice_Min, statistics.getPrice_min());
 		page.put(Constants.listingSearchResultFieldPrice_Max, statistics.getPrice_max());
 		page.put(Constants.listingSearchResultFieldCount, statistics.getCount());
@@ -580,7 +593,7 @@ public class ListingRESTController {
 			for(int commentsArrayIndex=0;commentsArrayIndex<commentsArray.length();commentsArrayIndex++){
 				JSONObject editedComment=commentsArray.getJSONObject(commentsArrayIndex);
 					try {
-						editedComment.accumulate(Constants.commentDataFieldUserImage, 
+						editedComment.put(Constants.commentDataFieldUserImage, 
 								this.userManager.loadUserById(editedComment.getInt(Constants.commentDataFieldUserId)).getPicture());
 					} catch (UserNotFoundException e) {
 						System.out.println("The user with id " + editedComment.getInt(Constants.commentDataFieldUserId) + " doesn' exist anymore");

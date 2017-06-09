@@ -29,12 +29,14 @@ public class SingleRecreationRequest extends RecreationRequest{
 		super.fillFields(listingData, creator);
 		if(!listingData.isNull(Constants.listingDataFieldHappeningDate)){
 			this.setHappeningDate(new Date(listingData.getLong(Constants.listingDataFieldHappeningDate)));
+		}else{
+			this.setHappeningDate(null);
 		}
 	}
 
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldPicture, this.getPicture());
+		json.put(Constants.listingDataFieldPicture, this.getPicture());
 		return json;
 	}
 

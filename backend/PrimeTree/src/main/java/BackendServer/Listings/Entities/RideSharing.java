@@ -100,6 +100,8 @@ public class RideSharing extends Offering {
 		this.setFromLocation(listingData.getString(Constants.listingDataFieldFromLocation));
 		if(!listingData.isNull(Constants.listingDataFieldJourneyStops)){
 			this.setJourneyStops(SimpleMethods.parseJSONArrayToStringList(listingData.getJSONArray(Constants.listingDataFieldJourneyStops)));
+		}else{
+			this.setJourneyStops(new LinkedList<String>());
 		}
 		this.setToLocation(listingData.getString(Constants.listingDataFieldToLocation));
 		if(!listingData.isNull(Constants.listingDataFieldAvailableSeats)){
@@ -123,13 +125,13 @@ public class RideSharing extends Offering {
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = super.toJSON();
-		json.accumulate(Constants.listingDataFieldFromLocation, this.getFromLocation());
-		json.accumulate(Constants.listingDataFieldJourneyStops, this.getJourneyStops());
-		json.accumulate(Constants.listingDataFieldToLocation, this.getToLocation());
+		json.put(Constants.listingDataFieldFromLocation, this.getFromLocation());
+		json.put(Constants.listingDataFieldJourneyStops, this.getJourneyStops());
+		json.put(Constants.listingDataFieldToLocation, this.getToLocation());
 		if(this.isSeatsLimited()){
-			json.accumulate(Constants.listingDataFieldAvailableSeats, this.getAvailableSeats());
+			json.put(Constants.listingDataFieldAvailableSeats, this.getAvailableSeats());
 		}
-		json.accumulate(Constants.listingDataFieldTravelDateAndTime, this.getTravelDateAndTime());
+		json.put(Constants.listingDataFieldTravelDateAndTime, this.getTravelDateAndTime());
 		return json;
 	}
 
