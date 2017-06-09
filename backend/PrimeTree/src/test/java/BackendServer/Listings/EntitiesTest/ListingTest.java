@@ -3,6 +3,8 @@ package BackendServer.Listings.EntitiesTest;
 import static org.assertj.core.api.Assertions.in;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class ListingTest {
 	private String imagepath1;
 	private String imagepath2;
 	private long createDate, deadLine;
+	private Collection comments;
 
 	
 	@Rule
@@ -44,6 +47,7 @@ public class ListingTest {
 	public void initObjects() {
 		createDate = new Date().getTime();
 		deadLine = new Date().getTime()+20;
+		comments = new ArrayList();
 
 		testListing = new SellItem();
 		initialiseJSONObject = new JSONObject();
@@ -58,6 +62,9 @@ public class ListingTest {
 		initialiseJSONObject.put(Constants.listingDataFieldPrice, 0);
 		initialiseJSONObject.put(Constants.listingDataFieldCondition, "new");
 		initialiseJSONObject.put(Constants.listingDataFieldActive, true);
+		initialiseJSONObject.put(Constants.listingDataFieldComments, "");
+		initialiseJSONObject.put(Constants.listingDataFieldComments, comments);
+		
 
 		locations = new String[2];
 		locations[0] = "Mannheim";
@@ -154,14 +161,12 @@ public class ListingTest {
 	 */
 	@Test
 	public void toJSONTest() {
-		testJSON = testListing.toJSON();
 		testListing.fillFields(initialiseJSONObject, 0);
+		testJSON = testListing.toJSON();
 
-		// assertEquals(testJSON.get("id"), testListing.getListingId());
 		assertEquals(testJSON.get(Constants.listingDataFieldCreator), testListing.getOwner());
 		assertEquals(testJSON.get(Constants.listingDataFieldDescription), testListing.getDescription());
 		assertEquals(testJSON.get(Constants.listingDataFieldTitle), testListing.getTitle());
-		assertEquals(testJSON.get(Constants.listingDataFieldPicture), testListing.getPicture());
 		assertEquals(testJSON.get(Constants.listingDataFieldLocation), testListing.getLocation());
 		assertEquals(testJSON.get(Constants.listingDataFieldActive), testListing.isActive());
 	}
