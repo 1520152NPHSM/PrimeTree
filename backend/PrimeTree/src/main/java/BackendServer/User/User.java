@@ -2,7 +2,6 @@ package BackendServer.User;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import BackendServer.ClientDatabaseAccess.Entities.EmployeeData;
-import BackendServer.Exceptions.FavouriteNotFoundException;
+import BackendServer.ClientDatabaseAccess.Entities.Location;
 import BackendServer.Listings.Constants;
 import BackendServer.UserData.Entities.UserData;
 
@@ -107,7 +106,11 @@ public class User implements UserDetails {
 		userAsJSON.put(Constants.userFieldIsAdmin, this.isAdmin());
 		userAsJSON.put(Constants.userFieldEMail, this.getEMail());
 		userAsJSON.put(Constants.userFieldPhone, this.getPhoneNumber());
-		userAsJSON.put(Constants.userFieldLocation, this.getLocation());
+		if(this.getLocation()!=null){
+			userAsJSON.put(Constants.userFieldLocation, this.getLocation());
+		}else{
+			userAsJSON.put(Constants.userFieldLocation, "NotKnown");
+		}
 		userAsJSON.put(Constants.userFieldPosition, this.getPosition());
 		
 		return userAsJSON;
@@ -117,8 +120,8 @@ public class User implements UserDetails {
 		return employeeData.getSkillLevel();
 	}
 
-	private String getLocation() {
-		return employeeData.getStandort().getOrtName();
+	private Location getLocation() {
+		return employeeData.getStandort();
 	}
 
 	private String getPhoneNumber() {

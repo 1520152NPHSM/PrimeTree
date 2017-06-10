@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override protected void configure(HttpSecurity http) throws Exception {
 
-		http.addFilterBefore(new MyUsernamePasswordAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new MyUsernamePasswordAuthenticationFilter(authenticationManager(), loginSuccessHandler()), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class );
 		
         http
