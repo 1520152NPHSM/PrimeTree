@@ -416,7 +416,7 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value= "listings/search", method=RequestMethod.GET)
 	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		if(query.length()<2){
+		if(query==null || query.length()<2){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return "";
 			}

@@ -76,6 +76,10 @@ public class SellItem extends Offering{
 	@Override
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException{
 		super.fillFields(listingData, creator);
+		if(listingData.isNull(Constants.listingDataFieldPrice)
+				|| listingData.isNull(Constants.listingDataFieldCondition)){
+			throw new WrongFormatException("Missing required fields");
+		}
 		if(!Constants.allItemConditions.contains(listingData.getString(Constants.listingDataFieldCondition))){
 			throw new WrongFormatException("This condition does not exist");
 		}

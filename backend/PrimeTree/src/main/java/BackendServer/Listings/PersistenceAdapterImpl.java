@@ -605,15 +605,19 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	 * @return local pathname
 	 * @throws IOException if the originalFilename hints, that the file is not an image file*/
 	private String getImageFileTypeEnding(String originalFilename) throws IOException{
-		String ending=originalFilename.substring(originalFilename.length()-4).toLowerCase();
-		if(".png".equals(ending)||".jpg".equals(ending)){
-			return ending;
-		}else{
-			ending=originalFilename.substring(originalFilename.length()-5).toLowerCase();
-			if(".jpeg".equals(ending)){
+		try{
+			String ending=originalFilename.substring(originalFilename.length()-4).toLowerCase();
+			if(".png".equals(ending)||".jpg".equals(ending)){
 				return ending;
+			}else{
+				ending=originalFilename.substring(originalFilename.length()-5).toLowerCase();
+				if(".jpeg".equals(ending)){
+					return ending;
+				}
+				throw new IOException("The given file is neither a .png, .jpeg nor .jpg file.");
 			}
-			throw new IOException("The given file is neither a .png, .jpeg nor .jpg file.");
+		}catch(StringIndexOutOfBoundsException originalFilenameIsNotLongEnoughException){
+			throw new IOException("The filename is not long enough");
 		}
 	}
 	

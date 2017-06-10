@@ -56,6 +56,10 @@ public class RideShareRequest extends RequestListing {
 	@Override
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException {
 		super.fillFields(listingData, creator);
+		if(listingData.isNull(Constants.listingDataFieldFromLocation)
+				|| listingData.isNull(Constants.listingDataFieldToLocation)){
+			throw new WrongFormatException("Missing required fields");
+		}
 		this.setFromLocation(listingData.getString(Constants.listingDataFieldFromLocation));
 		this.setToLocation(listingData.getString(Constants.listingDataFieldToLocation));
 		if(!listingData.isNull(Constants.listingDataFieldTravelDateAndTime)){
