@@ -23,7 +23,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import BackendServer.ClientDatabaseAccess.Config.EmployeeBeanCollection;
 import BackendServer.Listings.ListingBeanCollection;
 import BackendServer.Listings.TestConfigRESTController;
-import BackendServer.User.TestConfigUserRESTController;
 import BackendServer.User.UserRESTController;
 import BackendServer.UserData.Configuration.UserBeanCollection;
 
@@ -61,7 +60,7 @@ public class UserRestControllerTest {
     	response = new MockHttpServletResponse();
     	response.setStatus(HttpServletResponse.SC_OK);
     }
-    
+    //----------------------------------getUser()------------------------------------------
     /**
      * Test with everything ok
      */
@@ -81,6 +80,14 @@ public class UserRestControllerTest {
     	String result = testUserRESTController.getUser(-1, request, response);
     	assertEquals(response.getStatus(), HttpServletResponse.SC_NOT_FOUND);
     			
+    }
+    
+    /**
+     * Test getUser not logged in
+     */
+    @Test
+    public void userRESTControllerGetUserTestWithoutLoggedIn(){
+    	secCon.
     }
 	
 

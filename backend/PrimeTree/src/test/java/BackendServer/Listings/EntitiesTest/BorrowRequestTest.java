@@ -39,7 +39,6 @@ public class BorrowRequestTest {
 		initialiseJSONOject.put(Constants.listingDataFieldCondition, "new");
 		initialiseJSONOject.put(Constants.listingDataFieldBorrowFromDate, dateOne);
 		initialiseJSONOject.put(Constants.listingDataFieldBorrowToDate, dateTwo);
-		initialiseJSONOject.put(Constants.listingDataFieldPicture, "/path/to/picture");
 	}
 
 	// ---------------------------- fillFields
@@ -58,7 +57,6 @@ public class BorrowRequestTest {
 		Date date2 = new Date(dateOne);
 		assertEquals(date1, borrowRequestTest.getBorrowToDate());
 		assertEquals(date2, borrowRequestTest.getBorrowFromDate());
-		assertEquals("/path/to/picture", borrowRequestTest.getPicture());
 
 	}
 
@@ -94,10 +92,11 @@ public class BorrowRequestTest {
 	 * 
 	 * @throws WrongFormatException
 	 */
-	@Test(expected = WrongFormatException.class)
+	@Test
 	public void borrowRequestFillFieldsTestWithNoBorrowFromDate() throws WrongFormatException {
 		initialiseJSONOject.remove(Constants.listingDataFieldBorrowFromDate);
 		borrowRequestTest.fillFields(initialiseJSONOject, 0);
+		assertEquals(null, borrowRequestTest.getBorrowFromDate());
 	}
 
 	// -------------------------------------- borrowToDate
@@ -108,10 +107,11 @@ public class BorrowRequestTest {
 	 * 
 	 * @throws WrongFormatException
 	 */
-	@Test(expected = WrongFormatException.class)
+	@Test
 	public void borrowRequestFillFieldsTestWithNoBorrowToDate() throws WrongFormatException {
 		initialiseJSONOject.remove(Constants.listingDataFieldBorrowToDate);
 		borrowRequestTest.fillFields(initialiseJSONOject, 0);
+		assertEquals(null, borrowRequestTest.getBorrowToDate());
 	}
 
 	/**
@@ -145,11 +145,12 @@ public class BorrowRequestTest {
 	 * Test fillFields with wrong imageLocation
 	 * @throws WrongFormatException 
 	 */
-	@Test(expected = JSONException.class)
+	@Test
 	public void borrowFillFieldsTestWithWrongPicture() throws WrongFormatException {
 		initialiseJSONOject.remove(Constants.listingDataFieldPicture);
 		initialiseJSONOject.put(Constants.listingDataFieldPicture, 123);
 		borrowRequestTest.fillFields(initialiseJSONOject, 0);
+		assertNull(borrowRequestTest.getPicture());
 	}
 
 }
