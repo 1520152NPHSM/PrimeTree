@@ -22,7 +22,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import BackendServer.ClientDatabaseAccess.Config.EmployeeBeanCollection;
 import BackendServer.Listings.ListingBeanCollection;
-import BackendServer.Listings.TestConfigRESTController;
 import BackendServer.User.UserRESTController;
 import BackendServer.UserData.Configuration.UserBeanCollection;
 
@@ -31,7 +30,7 @@ import BackendServer.UserData.Configuration.UserBeanCollection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes ={ ListingBeanCollection.class, 
+@ContextConfiguration(classes ={ ListingBeanCollection.class, UserRestControllerTest.class, 
 		EmployeeBeanCollection.class, UserBeanCollection.class})
 public class UserRestControllerTest {
 
