@@ -237,6 +237,9 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	@Override
 	public Listing[] getListingsFiltered(int page, final String[] location, final int price_min, final int price_max, final String[] type,
 			final String kind, String sort, ListingSearchStatistics statistics) {
+		if(price_min>price_max){
+			throw new WrongFormatException("price_min größer als price_max");
+		}
 		return getAllListingsFiltered(statistics, page, sort, new ListingFilterer(){
 
 			@Override
@@ -251,6 +254,9 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	@Override
 	public Listing[] getListingsFiltered(int page, final String[] location, final boolean shallBeActive, final int price_min, final int price_max, final String[] type, final String kind,
 			String sort, ListingSearchStatistics statistics) {
+		if(price_min>price_max){
+			throw new WrongFormatException("price_min größer als price_max");
+		}
 		return getAllListingsFiltered(statistics, page, sort, new ListingFilterer(){
 
 			@Override
@@ -264,6 +270,9 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	@Override
 	public Listing[] getListingsBySearch(final String query, int page, final String[] location, boolean b, final int price_min,
 			final int price_max, final String[] type, final String kind, String sort, ListingSearchStatistics statistics) {
+		if(price_min>price_max){
+			throw new WrongFormatException("price_min größer als price_max");
+		}
 		return getAllListingsFiltered(statistics, page, sort, new ListingFilterer(){
 
 			@Override
@@ -614,6 +623,16 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 
 	private String getPublicFilePathFromLocal(String localFilePath) {
 		return localFilePath.substring(15);
+	}
+
+	@Override
+	public void registerAllListingsInGlobalStatistics(GlobalStatistics statistics) {
+		Collection<Listing> allListingsInCollection=this.getAllListings();
+		Listing[] allListings=new Listing[allListingsInCollection.size()];
+		allListingsInCollection.toArray(allListings);
+		for(Listing registeredListing : allListings){
+			statistics.registerListing(registeredListing);
+		}
 	}
 
 }

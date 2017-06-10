@@ -263,7 +263,7 @@ public class ListingRESTController {
 	
 	/**This method uploads a temporary image and returns the public path so the frontend can edit it
 	 * @param request
-	 * @param response The status stays at 200 if everything went ok, 400 if the file isn't a valid image file and 401 if the user is not logged in.
+	 * @param response The status stays at 200 if everything went ok, 415 if the file isn't a valid image file and 401 if the user is not logged in.
 	 * @param file the file that should be uploaded
 	 */
 	@CrossOrigin
@@ -277,7 +277,7 @@ public class ListingRESTController {
 			String publicPath=persistenceAdapter.uploadTemporaryImage(file.getBytes(), file.getOriginalFilename());
 			result.put("imagePath", publicPath);
 		} catch (IOException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 		}
 		return result.toString();
 	}
@@ -351,7 +351,7 @@ public class ListingRESTController {
 			}
 			persistenceAdapter.putImageInGallery(file.getBytes(), listingId, galleryIndex, file.getOriginalFilename());
 		} catch (IOException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (NoImageGallerySupportedException e) {
@@ -416,14 +416,19 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value= "listings/search", method=RequestMethod.GET)
 	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-//		if(query.length()<2){
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return "";
-//			}
+		if(query.length()<2){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return "";
+			}
 		ListingSearchStatistics statistics=new ListingSearchStatistics();
-		Listing[] resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
-		JSONObject result=this.createPage(resultListings, statistics);
-		return result.toString();
+		try{
+			Listing[] resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
+			JSONObject result=this.createPage(resultListings, statistics);
+			return result.toString();
+		}catch(WrongFormatException e){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return "";
+		}
 	}
 	
 	/**This method returns a page of all listings that match the filter-options including activated and deactivated listings. 
@@ -455,10 +460,15 @@ public class ListingRESTController {
 	@RequestMapping(value = "/listings", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public @ResponseBody String getAllListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		ListingSearchStatistics statistics=new ListingSearchStatistics();
-		Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
-		JSONObject result=this.createPage(resultListings, statistics);
-		return result.toString();
+		try{	
+			ListingSearchStatistics statistics=new ListingSearchStatistics();
+			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
+			JSONObject result=this.createPage(resultListings, statistics);
+			return result.toString();
+		}catch(WrongFormatException e){
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		return "";
+		}
 	}
 	
 	/**This method returns a page of all active listings that match the filter-options. 
@@ -488,10 +498,15 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value = "listings/active", method = RequestMethod.GET)
 	public @ResponseBody String getActiveListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		ListingSearchStatistics statistics=new ListingSearchStatistics();
-		Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
-		JSONObject result=this.createPage(resultListings, statistics);
-		return result.toString();
+		try{	
+			ListingSearchStatistics statistics=new ListingSearchStatistics();
+			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
+			JSONObject result=this.createPage(resultListings, statistics);
+			return result.toString();
+		}catch(WrongFormatException e){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return "";
+		}
 	}
 	
 	/**This method returns a page of all inactive listings that match the filter-options. 
@@ -522,10 +537,15 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value = "listings/inactive", method = RequestMethod.GET)
 	public @ResponseBody String getInactiveListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		ListingSearchStatistics statistics=new ListingSearchStatistics();
-		Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
-		JSONObject result=this.createPage(resultListings, statistics);
-		return result.toString();
+		try{
+			ListingSearchStatistics statistics=new ListingSearchStatistics();
+			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
+			JSONObject result=this.createPage(resultListings, statistics);
+			return result.toString();
+		}catch(WrongFormatException e){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return "";
+		}
 	}
 	
 	/** This method allows users to see all own listings
