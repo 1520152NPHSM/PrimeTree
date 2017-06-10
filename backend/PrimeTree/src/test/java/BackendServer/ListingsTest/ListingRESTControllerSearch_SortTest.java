@@ -26,12 +26,12 @@ import BackendServer.ClientDatabaseAccess.Config.EmployeeBeanCollection;
 import BackendServer.Listings.Constants;
 import BackendServer.Listings.ListingBeanCollection;
 import BackendServer.Listings.ListingRESTController;
-import BackendServer.Listings.TestConfigRESTController;
+import BackendServer.TestStuff.TestExclusiveBeans;
 import BackendServer.UserData.Configuration.UserBeanCollection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { ListingBeanCollection.class, TestConfigRESTController.class,
+@ContextConfiguration(classes = { ListingBeanCollection.class, TestExclusiveBeans.class,
 		EmployeeBeanCollection.class, UserBeanCollection.class })
 public class ListingRESTControllerSearch_SortTest {
 

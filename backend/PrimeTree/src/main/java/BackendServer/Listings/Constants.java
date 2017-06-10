@@ -27,7 +27,7 @@ public class Constants {
 	listingDataFieldListingType="type",
 	listingDataFieldCreateDate="createDate",
 	listingDataFieldActive="isActive",
-	listingDataFieldCreator="creator",
+	listingDataFieldCreator="creatorID",
 	listingDataFieldId="id",
 	listingDataFieldImageGallery="imageGallery",
 	listingDataFieldPicture="mainImage",
@@ -116,6 +116,23 @@ public class Constants {
 	responseFieldNewListingId="id";
 
 	public static final int numberOfImagesPerGallery = 4;
+
+	public static final String 
+	globalStatisticsFieldLocationInformation = "locations",
+	globalStatisticsFieldNumberOfListings = "numberOfListings",
+	globalStatisticsFieldNumberOfActiveListings = "numberOfActiveListings",
+	globalStatisticsFieldNumberOfInactiveListings = "numberOfInactiveListings",
+	globalStatisticsFieldListingTypeInformation="listingTypes",
+	globalStatisticsFieldNumberOfUsers="numberOfUsers",
+	globalStatisticsFieldNumberOfAdmins="numberOfAdmins";
+
+	public static final String 
+	locationInformationFieldLocationName="locationName",
+	locationInformationFieldNumberOfListings="numberOfListings";
+
+	public static final String 
+	listingTypeInformationFieldListingTypeName="listingTypeName",
+	listingTypeInformationFieldNumberOfListings="numberOfListings";
 
 	private static List<String> allItemConditions() {
 		List<String> allOptions=new LinkedList<String>();
