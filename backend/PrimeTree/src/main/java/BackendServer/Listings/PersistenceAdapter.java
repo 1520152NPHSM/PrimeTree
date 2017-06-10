@@ -134,7 +134,7 @@ public interface PersistenceAdapter {
 	 * @return an array of all listings in the requested page
 	 */
 	public Listing[] getListingsFiltered(int page, String[] location, boolean shallBeActive, int price_min, int price_max, String[] type, String kind,
-			String sort, ListingSearchStatistics statistics);
+			String sort, ListingSearchStatistics statistics) throws WrongFormatException;
 
 	/**This method returns a page of listings that match the filterOptions and writes the statistics 
 	 * into the statistics-parameter
@@ -154,7 +154,7 @@ public interface PersistenceAdapter {
 	 * @return an array of all listings in the requested page
 	 */
 	public Listing[] getListingsFiltered(int page, String[] location, int price_min, int price_max, String[] type, String kind,
-			String sort, ListingSearchStatistics statistics);
+			String sort, ListingSearchStatistics statistics) throws WrongFormatException;
 
 	/**This method returns a page of listings that match the filterOptions and contains query in the title or the 
 	 * description and writes the statistics into the statistics-parameter
@@ -176,9 +176,10 @@ public interface PersistenceAdapter {
 	 * @param sort This string defines the sort-criteria of all results before the page is pulled out.
 	 * @param statistics A statistics Object which is filled in the method
 	 * @return an array of all listings in the requested page
+	 * @throws WrongFormatException if price_min>price_max
 	 */
 	public Listing[] getListingsBySearch(String query, int page, String[] location, boolean b, int price_min, int price_max,
-			String[] type, String kind, String sort, ListingSearchStatistics statistics);
+			String[] type, String kind, String sort, ListingSearchStatistics statistics) throws WrongFormatException;
 	
 	/**This method removes an image from the gallery in the listing with the id listingId and replaces it 
 	 * with a new image
@@ -220,4 +221,6 @@ public interface PersistenceAdapter {
 	 * @throws PathNotTemporaryException 
 	 */
 	public void deleteTemporaryImage(String imagePath) throws PathNotTemporaryException;
+
+	public void registerAllListingsInGlobalStatistics(GlobalStatistics statistics);
 }

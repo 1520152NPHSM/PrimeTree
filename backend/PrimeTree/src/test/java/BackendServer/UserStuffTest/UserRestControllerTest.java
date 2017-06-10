@@ -31,7 +31,7 @@ import BackendServer.UserData.Configuration.UserBeanCollection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes ={ ListingBeanCollection.class, TestConfigUserRESTController.class, 
+@ContextConfiguration(classes ={ ListingBeanCollection.class, 
 		EmployeeBeanCollection.class, UserBeanCollection.class})
 public class UserRestControllerTest {
 
@@ -81,14 +81,7 @@ public class UserRestControllerTest {
     	assertEquals(response.getStatus(), HttpServletResponse.SC_NOT_FOUND);
     			
     }
-    
-    /**
-     * Test getUser not logged in
-     */
-    @Test
-    public void userRESTControllerGetUserTestWithoutLoggedIn(){
-    	secCon.
-    }
+
 	
 
 }

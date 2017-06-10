@@ -41,7 +41,7 @@ public class PersistenceAdapterSearchAndFilterTest {
 		locationArray1=new String[]{location1, location2};
 		minPrice1=0;
 		maxPrice1=100;
-		typeArray1=new String[]{Constants.type};
+//		typeArray1=new String[]{Constants.type};
 	}
 	
 //	@Test

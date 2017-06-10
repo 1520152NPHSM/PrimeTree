@@ -41,13 +41,13 @@ import BackendServer.Exceptions.WrongFormatException;
 import BackendServer.Listings.Constants;
 import BackendServer.Listings.ListingRESTController;
 import BackendServer.Listings.PersistenceAdapter;
-import BackendServer.Listings.TestConfigRESTController;
+import BackendServer.TestStuff.TestExclusiveBeans;
 import BackendServer.UserData.Configuration.UserBeanCollection;
 import BackendServer.Listings.ListingBeanCollection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes ={ ListingBeanCollection.class, TestConfigRESTController.class,
+@ContextConfiguration(classes ={ ListingBeanCollection.class, TestExclusiveBeans.class,
 		EmployeeBeanCollection.class, UserBeanCollection.class})
 public class ListingRestControllerTest{
 	
