@@ -1,5 +1,14 @@
 package PrimeTree;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import BackendServer.Listings.PersistenceAdapter;
+import BackendServer.Listings.PersistenceAdapterImpl;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -10,6 +19,7 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+	
     /**
      * Create the test case
      *
@@ -31,7 +41,7 @@ public class AppTest
     /**
      * Rigourous Test :-)
      */
-    public void testApp()
+    public void testSQLAdapterImpl()
     {
         assertTrue( true );
     }

@@ -1,13 +1,9 @@
 package BackendServer.Listings.ObjectControllers;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import BackendServer.Listings.Entities.Offering;
 
-import org.json.JSONObject;
-
-/**This abstract class is the super-class of all ListingObjectController-sub-classes, that control an offering*/
+/**This abstract class is the super-class of all ListingObjectController-sub-classes, that control an offering
+ * @param <L>*/
 public abstract class OfferingObjectController extends ListingObjectController {
-
 	
 }

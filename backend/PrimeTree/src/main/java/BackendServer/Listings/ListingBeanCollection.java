@@ -3,8 +3,8 @@ package BackendServer.Listings;
 import java.util.HashMap;
 
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,14 +15,29 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import BackendServer.Listings.ObjectControllers.BorrowRequestObjectController;
 import BackendServer.Listings.ObjectControllers.ListingObjectController;
+import BackendServer.Listings.ObjectControllers.PurchaseRequestObjectController;
+import BackendServer.Listings.ObjectControllers.ReturningRecreationRequestObjectController;
+import BackendServer.Listings.ObjectControllers.RideShareRequestObjectController;
+import BackendServer.Listings.ObjectControllers.RideSharingObjectController;
 import BackendServer.Listings.ObjectControllers.SellItemObjectController;
-
+import BackendServer.Listings.ObjectControllers.ServiceOfferingObjectController;
+import BackendServer.Listings.ObjectControllers.SingleRecreationRequestObjectController;
+import BackendServer.User.Service.MyPermissionEvaluator;
+import BackendServer.User.Service.UserManager;
+import BackendServer.User.Service.UserManagerImpl;
 
 /**This class defines all beans relevant for the implementation of the Listing-REST-methods 
- * and enables the JpaRepositories of listingdb*/
+ * and enables the JpaRepositories of listingdb
+ * The first part of this class is inspired by this tutorial for accessing multiple databases 
+ * in one Spring-Application using JPA: http://www.baeldung.com/spring-data-jpa-multiple-databases
+ * 
+ * @author Florian Kutz
+ * */
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
@@ -35,9 +50,12 @@ public class ListingBeanCollection {
 	@Autowired
     private Environment env;
     
+	/**This method is inspired by the tutorial described in the javadoc of this class*/
     @Bean
-    @Primary
     public LocalContainerEntityManagerFactoryBean listingEntityManager() {
+    	
+    	System.out.println("listingEntityManager() aufgerufen");
+    	
         LocalContainerEntityManagerFactoryBean em
           = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(listingDataSource());
@@ -48,19 +66,24 @@ public class ListingBeanCollection {
         HibernateJpaVendorAdapter vendorAdapter
           = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        HashMap<String, Object> properties = new HashMap<>();
+        HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.hbm2ddl.auto",
-          env.getProperty("hibernate.hbm2ddl.auto"));
+          env.getProperty("listings.hbm2ddl.auto"));
         properties.put("hibernate.dialect",
           env.getProperty("hibernate.dialect"));
+        em.setJpaPropertyMap(properties);
+        /*The following property is there to solve an error caused by a thrown LazyInitializationException*/ 
+        properties.put("hibernate.enable_lazy_load_no_trans",true);
         em.setJpaPropertyMap(properties);
  
         return em;
     }
  
-    @Primary
+    /**This method is inspired by the tutorial described in the javadoc of this class*/
     @Bean
     public DataSource listingDataSource() {
+    	
+    	System.out.println("listingDataSource() aufgerufen");
   
         DriverManagerDataSource dataSource
           = new DriverManagerDataSource();
@@ -73,9 +96,11 @@ public class ListingBeanCollection {
         return dataSource;
     }
  
-    @Primary
+    /**This method is inspired by the tutorial described in the javadoc of this class*/
     @Bean
     public PlatformTransactionManager listingTransactionManager() {
+    	
+    	System.out.println("listingTransactionManager() aufgerufen");
   
         JpaTransactionManager transactionManager
           = new JpaTransactionManager();
@@ -84,17 +109,72 @@ public class ListingBeanCollection {
         return transactionManager;
     }
 	
+    /**This bean gives us an instance of the interface PersistenceAdapter*/
 	@Bean 
-	public SQLAdapter sqlAdapter(){
-	   return new SQLAdapterImpl();
+	public PersistenceAdapter persistenceAdapter(){
+	   return new PersistenceAdapterImpl();
+	}
+	
+	/**This bean gives us an array of non-abstract instances of ListingObjectController responsible for 
+	 * all required listingTypes*/
+	@Bean
+	public ListingObjectController[] getAnArrayOfAllTypesOfListingObjectController(){
+		ListingObjectController[] returnValue={
+				sellItemObjectController(),
+				serviceOfferingObjectController(),
+				rideSharingObjectController(),
+				rideShareRequestObjectController(),
+				purchaseRequestObjectController(),
+				borrowRequestObjectController(),
+				singleRecreationRequestObjectController(),
+				returningRecreationRequestObjectController()
+		};
+		return returnValue;
 	}
 	
 	@Bean
-	public ListingObjectController[] listingObjectControllerArray(){
-		ListingObjectController[] returnValue={
-				new SellItemObjectController()
-		};
-		return returnValue;
+	public SellItemObjectController sellItemObjectController() {
+		return new SellItemObjectController();
+	}
+	
+	@Bean
+	public ServiceOfferingObjectController serviceOfferingObjectController(){
+		return new ServiceOfferingObjectController();
+	}
+	
+	@Bean
+	public RideSharingObjectController rideSharingObjectController(){
+		return new RideSharingObjectController();
+	}
+	
+	@Bean
+	public RideShareRequestObjectController rideShareRequestObjectController(){
+		return new RideShareRequestObjectController();
+	}
+	
+	@Bean 
+	public PurchaseRequestObjectController purchaseRequestObjectController(){
+		return new PurchaseRequestObjectController();
+	}
+	
+	@Bean
+	public BorrowRequestObjectController borrowRequestObjectController(){
+		return new BorrowRequestObjectController();
+	}
+	
+	@Bean
+	public SingleRecreationRequestObjectController singleRecreationRequestObjectController(){
+		return new SingleRecreationRequestObjectController();
+	}
+	
+	@Bean
+	public ReturningRecreationRequestObjectController returningRecreationRequestObjectController(){
+		return new ReturningRecreationRequestObjectController();
+	}
+
+	@Bean
+	public PermissionEvaluator permissionEvaluator(){
+		return new MyPermissionEvaluator();
 	}
 
 }
