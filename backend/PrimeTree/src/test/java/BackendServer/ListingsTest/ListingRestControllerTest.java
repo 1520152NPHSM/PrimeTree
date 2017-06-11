@@ -59,9 +59,10 @@ public class ListingRestControllerTest{
     private SecurityContext secCon;
     private Authentication auth;
     
-    private JSONObject requestBody, commentRequestBody;
+    private JSONObject requestBody, commentRequestBody, resultJSON;
     private String requestBodyString, commentRequestBodyString, query;
     private String[] locationArray, typeArray;
+    private int listingID;
  
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
@@ -155,8 +156,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("GET", "listing/{id}");
-		result = testRESTController.getListing(0, request, response);
+		result = testRESTController.getListing(listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -167,7 +170,7 @@ public class ListingRestControllerTest{
 	public void getListingTestWrongId(){
 		request = new MockHttpServletRequest("GET", "listing/{id}");
 		String result = testRESTController.getListing(Integer.MAX_VALUE, request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 	
 	/**
@@ -190,8 +193,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}");
-		testRESTController.editListing(requestBodyString, 0, request, response);
+		testRESTController.editListing(requestBodyString, listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -213,11 +218,13 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		requestBody.remove(Constants.listingDataFieldDescription);
 		requestBody.put(Constants.listingDataFieldDescription, 0);
 		requestBodyString = requestBody.toString();
 		request = new MockHttpServletRequest("POST", "listing/{id}");
-		testRESTController.editListing(requestBodyString, 0, request, response);
+		testRESTController.editListing(requestBodyString, listingID, request, response);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -230,8 +237,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("DELETE", "listing/delete/{id}");
-		testRESTController.delete(0, request, response);
+		testRESTController.delete(listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -255,8 +264,10 @@ public class ListingRestControllerTest{
 	public void deactivateListing(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/deactivate");
-		testRESTController.deactivateListing(0, request, response);
+		testRESTController.deactivateListing(listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -281,10 +292,12 @@ public class ListingRestControllerTest{
 	public void activateListingTestWithCorrectValues(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/deactivate");
-		testRESTController.deactivateListing(0, request, response);
+		testRESTController.deactivateListing(listingID, request, response);
 		request = new MockHttpServletRequest("POST", "listing/{id}/activate");
-		testRESTController.activateListing(0, request, response);
+		testRESTController.activateListing(listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -307,9 +320,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
-    	
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/comment");
-		testRESTController.postComment(0, commentRequestBodyString, request, response);
+		testRESTController.postComment(listingID, commentRequestBodyString, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -333,10 +347,12 @@ public class ListingRestControllerTest{
 	public void deleteCommentWithEverythingCorrect(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/comment");
-		testRESTController.postComment(0, commentRequestBodyString, request, response);
+		testRESTController.postComment(listingID, commentRequestBodyString, request, response);
 		request = new MockHttpServletRequest("DELETE", "listing/{listingId}/comment/{commentId}");
-		testRESTController.deleteComment(0, 0, request, response);
+		testRESTController.deleteComment(0, listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -357,8 +373,10 @@ public class ListingRestControllerTest{
 	public void deleteCommentTestWithWrongCommentID(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("DELETE", "listing/{listingId}/comment/{commentId}");
-		testRESTController.deleteComment(-1, 0, request, response);
+		testRESTController.deleteComment(-1, listingID, request, response);
 		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 	
@@ -371,8 +389,10 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithCorrectValues(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.listingMainImageUpload(0, request, response, file);
+		testRESTController.listingMainImageUpload(listingID, request, response, file);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -383,8 +403,10 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithJpg(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.listingMainImageUpload(0, request, response, fileZwei);
+		testRESTController.listingMainImageUpload(listingID, request, response, fileZwei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -395,8 +417,10 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithJPG(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.listingMainImageUpload(0, request, response, fileDrei);
+		testRESTController.listingMainImageUpload(listingID, request, response, fileDrei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -407,8 +431,10 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithPNG(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.listingMainImageUpload(0, request, response, fileVier);
+		testRESTController.listingMainImageUpload(listingID, request, response, fileVier);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -419,7 +445,7 @@ public class ListingRestControllerTest{
 	public void listingMainImageUploadTestWithWrongListingID(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
 		testRESTController.listingMainImageUpload(-1, request, response, file);
-		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
+		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 	
 	/**
@@ -451,8 +477,10 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithCorrectValues(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0, 0, request, response, file);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, file);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -463,8 +491,10 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithJpg(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0, 0, request, response, fileZwei);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, fileZwei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -475,8 +505,10 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithJPG(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0,0, request, response, fileDrei);
+		testRESTController.galleryImageUpload(listingID,0, request, response, fileDrei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -487,8 +519,10 @@ public class ListingRestControllerTest{
 	public void galleryImageUploadTestWithPNG(){
 		request = new MockHttpServletRequest("POST","listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0, 0,request, response, fileVier);
+		testRESTController.galleryImageUpload(listingID, 0,request, response, fileVier);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -531,8 +565,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{listingId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, file);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, file);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -544,8 +580,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+    	resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, fileZwei);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, fileZwei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -557,8 +595,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, fileDrei);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, fileDrei);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -571,8 +611,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, fileVier);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, fileVier);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -584,8 +626,10 @@ public class ListingRestControllerTest{
     	// create one listing in the Database
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, fileFuenf);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, fileFuenf);
 		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
@@ -609,8 +653,10 @@ public class ListingRestControllerTest{
 	public void listingGalleryChangeTestWithWrongGalleryId(){
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, -1, request, response, file);
+		testRESTController.galleryImageUpload(listingID, -1, request, response, file);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -621,8 +667,10 @@ public class ListingRestControllerTest{
 	public void listingGalleryChangeTestWithNullFile(){
        	request = new MockHttpServletRequest("POST", "listing");
     	String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/gallery/{lisitngId}/{galleryIndex}");
-		testRESTController.galleryImageUpload(0, 0, request, response, null);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, null);
 		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}
 	
@@ -635,10 +683,12 @@ public class ListingRestControllerTest{
 		// Setup
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0,0, request, response, file);
+		testRESTController.galleryImageUpload(listingID,0, request, response, file);
 		request = new MockHttpServletRequest("DELETE", "listing/upload/gallery/{listingId}/{galleryIndex}");
-		testRESTController.listingGalleryDelete(0, request, response);
+		testRESTController.listingGalleryDelete(listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -650,25 +700,29 @@ public class ListingRestControllerTest{
 		// Setup
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0, 0, request, response, file);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, file);
 		request = new MockHttpServletRequest("DELETE", "listing/upload/gallery/{listingId}/{galleryIndex}");
 		testRESTController.listingGalleryDelete(-1, request, response);
 		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 	
 	/**
-	 * Test listingGalleryDelete with wrong Listing id
+	 * Test listingGalleryDelete with wrong Gallery id
 	 */
 	@Test
 	public void listingGalleryDeleteTestWithWrongGalleryId(){
 		// Setup
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
+		resultJSON = new JSONObject(result);
+		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(0, 0, request, response, file);
+		testRESTController.galleryImageUpload(listingID, 0, request, response, file);
 		request = new MockHttpServletRequest("DELETE", "listing/upload/gallery/{listingId}/{galleryIndex}");
-		testRESTController.listingGalleryDelete(0,  request, response);
+		testRESTController.listingGalleryDelete(listingID,  request, response);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -850,7 +904,7 @@ public class ListingRestControllerTest{
 	 * Test getActiveListings with wrong minPrice
 	 */
 	@Test
-	public void getActiveListingsTestWithMinPrice(){
+	public void getActiveListingsTestWithWrongMinPrice(){
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
@@ -872,7 +926,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 22, 20, typeArray, Constants.listingKindOffering,
+		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, typeArray, Constants.listingKindOffering,
 				Constants.sortOptionAlphabetical_Asc, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
@@ -885,7 +939,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, null, 22, 20, typeArray, Constants.listingKindOffering,
+		result = testRESTController.getInactiveListings(1, null, 20, 22, typeArray, Constants.listingKindOffering,
 				Constants.sortOptionAlphabetical_Asc, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
@@ -899,7 +953,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 22, 20, null, Constants.listingKindOffering,
+		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, null, Constants.listingKindOffering,
 				Constants.sortOptionAlphabetical_Asc, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
@@ -913,7 +967,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 22, 20, typeArray, null,
+		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, typeArray, null,
 				Constants.sortOptionAlphabetical_Asc, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
