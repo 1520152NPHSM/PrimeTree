@@ -90,6 +90,7 @@ public class ListingRESTController {
 		} catch (WrongFormatException thrownException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
+		response.setStatus(HttpServletResponse.SC_CREATED);
 		return result.toString();
     }
 
@@ -239,6 +240,7 @@ public class ListingRESTController {
 	public @ResponseBody void postComment(@PathVariable(value="id") int listingId, @RequestBody String body, HttpServletRequest request, HttpServletResponse response){
 		try {
 			persistenceAdapter.comment(new JSONObject(body), getUserId(), listingId);
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
@@ -323,6 +325,7 @@ public class ListingRESTController {
 						throw new IOException();
 					}
 					persistenceAdapter.uploadMainImage(file.getBytes(), listingId, file.getOriginalFilename());
+					response.setStatus(HttpServletResponse.SC_CREATED);
 				} catch (IOException e) {
 					response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 				} catch (ListingNotFoundException e) {
@@ -351,6 +354,7 @@ public class ListingRESTController {
 				throw new IOException();
 			}
 			persistenceAdapter.putImageInGallery(file.getBytes(), listingId, galleryIndex, file.getOriginalFilename());
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 		} catch (ListingNotFoundException e) {
