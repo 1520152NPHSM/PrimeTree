@@ -469,6 +469,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithCorrectValues() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(true, test);
 		// other correct values for min/maxPrice price is set to 0
@@ -481,6 +482,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsWithWrongLocation() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		testListing.setLocation("Vossenack");
 		test = testListing.matchFilterOptions(locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(false, test);
@@ -492,6 +494,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithWrongType() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		testListing.setType("ServiceOffering");
 		test = testListing.matchFilterOptions(locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(false, test);
@@ -503,6 +506,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithNullLocation() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(null, true, 0, 0, typeArray, "Offering");
 		assertEquals(true, test);
 	}
@@ -512,6 +516,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithNullType() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 0, 0, null, "Offering");
 		assertEquals(true, test);
 	}
@@ -521,6 +526,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithNullKind() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 0, 0, typeArray, null);
 		assertEquals(true, test);
 	}
@@ -530,6 +536,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithFalseShallBeActive() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, false, 0, 0, typeArray, "Offering");
 		assertEquals(false, test);
 	}
@@ -539,6 +546,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithWrongKind() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 0, 0, typeArray, "Request");
 		assertEquals(false, test);
 	}
@@ -548,6 +556,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithWrongMinPrice() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 1, 0, typeArray, "Offering");
 		assertEquals(false, test);
 	}
@@ -557,6 +566,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsWithWrongMaxPrice() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(locations, true, 0, -2, typeArray, "Offering");
 		assertEquals(false, test);
 	}
@@ -568,6 +578,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithCorrectQueryTitle() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions("test1", locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(true, test);
 	}
@@ -577,6 +588,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithCorrectQueryDescription() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions("test", locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(true, test);
 	}
@@ -586,6 +598,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithQuerryNull() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions(null, locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(false, test);
 	}
@@ -595,6 +608,7 @@ public class ListingTest {
 	 */
 	@Test
 	public void matchFilterOptionsTestWithWrongQuery() {
+		testListing.fillFields(initialiseJSONObject, 0);
 		test = testListing.matchFilterOptions("test123", locations, true, 0, 0, typeArray, "Offering");
 		assertEquals(false, test);
 	}

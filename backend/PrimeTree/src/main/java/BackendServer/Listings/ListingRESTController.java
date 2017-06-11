@@ -1,6 +1,7 @@
 package BackendServer.Listings;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -415,14 +416,19 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value= "listings/search", method=RequestMethod.GET)
-	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
 		if(query==null || query.length()<2){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return "";
 			}
 		ListingSearchStatistics statistics=new ListingSearchStatistics();
+		Listing[] resultListings;
 		try{
-			Listing[] resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
+			if(page.isPresent()){
+				resultListings=persistenceAdapter.getListingsBySearch(query, page.get(), location, true, price_min, price_max, type, kind, sort, statistics);
+			}else{
+				resultListings=persistenceAdapter.getListingsBySearch(query, 1, location, true, price_min, price_max, type, kind, sort, statistics);
+			}
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -459,10 +465,15 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value = "/listings", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public @ResponseBody String getAllListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		try{	
+	public @ResponseBody String getAllListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
-			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
+			Listing[] resultListings;
+			if(page.isPresent()){
+				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, price_min, price_max, type, kind, sort, statistics);
+			}else{
+				resultListings=persistenceAdapter.getListingsFiltered(1, location, price_min, price_max, type, kind, sort, statistics);
+			}
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -497,10 +508,15 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "listings/active", method = RequestMethod.GET)
-	public @ResponseBody String getActiveListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
-		try{	
+	public @ResponseBody String getActiveListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
-			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
+			Listing[] resultListings;
+			if(page.isPresent()){
+				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, true, price_min, price_max, type, kind, sort, statistics);
+			}else{
+				resultListings=persistenceAdapter.getListingsFiltered(1, location, true, price_min, price_max, type, kind, sort, statistics);
+			}
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -536,10 +552,15 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "listings/inactive", method = RequestMethod.GET)
-	public @ResponseBody String getInactiveListings(@RequestParam("page") int page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getInactiveListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
 		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
-			Listing[] resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
+			Listing[] resultListings;
+			if(page.isPresent()){
+				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, false, price_min, price_max, type, kind, sort, statistics);
+			}else{
+				resultListings=persistenceAdapter.getListingsFiltered(1, location, false, price_min, price_max, type, kind, sort, statistics);
+			}
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
