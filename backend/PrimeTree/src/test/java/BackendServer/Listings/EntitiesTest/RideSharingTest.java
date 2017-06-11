@@ -48,9 +48,8 @@ public class RideSharingTest {
 	obj1.put(Constants.listingDataFieldFromLocation, "Koeln");
 	obj1.put(Constants.listingDataFieldPicture, "Null");
 	obj1.put(Constants.listingDataFieldTitle, "test1");
-	obj1.put(Constants.listingDataFieldFromLocation, "Mannheim");
 	obj1.put(Constants.listingDataFieldJourneyStops, linkedListForStops);
-	obj1.put(Constants.listingDataFieldFromLocation, "Frankfurt");
+	obj1.put(Constants.listingDataFieldToLocation, "Frankfurt");
 	obj1.put(Constants.listingDataFieldAvailableSeats, 3);
 	obj1.put(Constants.listingDataFieldTravelDateAndTime, 10);
 	}

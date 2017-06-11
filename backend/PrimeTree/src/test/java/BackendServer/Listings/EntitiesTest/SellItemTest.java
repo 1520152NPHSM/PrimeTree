@@ -42,7 +42,6 @@ public class SellItemTest {
 		obj1.put(Constants.listingDataFieldDescription, "test");
 		obj1.put(Constants.listingDataFieldDeadLine, 2.9);
 		obj1.put(Constants.listingDataFieldLocation, "Koeln");
-		obj1.put(Constants.listingDataFieldPicture, "test/location");
 		obj1.put(Constants.listingDataFieldTitle, "test1");
 		obj1.put(Constants.listingDataFieldPrice, 2.1);
 		obj1.put(Constants.listingDataFieldCondition, "new");
