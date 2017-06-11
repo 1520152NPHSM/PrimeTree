@@ -136,8 +136,8 @@ public class Constants {
 
 	private static List<String> allItemConditions() {
 		List<String> allOptions=new LinkedList<String>();
-		allOptions.add("new");
-		allOptions.add("used");
+		allOptions.add("New");
+		allOptions.add("Used");
 		return allOptions;
 	}
 
