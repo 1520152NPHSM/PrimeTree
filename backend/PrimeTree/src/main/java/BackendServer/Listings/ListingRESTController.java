@@ -416,19 +416,22 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value= "listings/search", method=RequestMethod.GET)
-	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getListingsBySearch(@RequestParam("query")String query,@RequestParam("page") Optional<Integer> pageOptional, @RequestParam("location") Optional<String[]> locationOptional, @RequestParam("price_min") Optional<Integer> price_minOptional, @RequestParam("price_max") Optional<Integer> price_maxOptional, @RequestParam("type") Optional<String[]> typeOptional, @RequestParam("kind") Optional<String> kindOptional, @RequestParam("sort") Optional<String> sortOptional, HttpServletRequest request, HttpServletResponse response){
 		if(query==null || query.length()<2){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return "";
 			}
+		int page=pageOptional.orElse(1);
+		int price_min=price_minOptional.orElse(Integer.MIN_VALUE);
+		int price_max=price_maxOptional.orElse(Integer.MAX_VALUE);
+		String[] location=locationOptional.orElse(null);
+		String[] type=typeOptional.orElse(null);
+		String kind=kindOptional.orElse(null);
+		String sort=sortOptional.orElse(Constants.sortOptionId);
 		ListingSearchStatistics statistics=new ListingSearchStatistics();
 		Listing[] resultListings;
 		try{
-			if(page.isPresent()){
-				resultListings=persistenceAdapter.getListingsBySearch(query, page.get(), location, true, price_min, price_max, type, kind, sort, statistics);
-			}else{
-				resultListings=persistenceAdapter.getListingsBySearch(query, 1, location, true, price_min, price_max, type, kind, sort, statistics);
-			}
+			resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -465,15 +468,18 @@ public class ListingRESTController {
 	@CrossOrigin
 	@RequestMapping(value = "/listings", method = RequestMethod.GET)
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public @ResponseBody String getAllListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getAllListings(@RequestParam("page") Optional<Integer> pageOptional, @RequestParam("location") Optional<String[]> locationOptional, @RequestParam("price_min") Optional<Integer> price_minOptional, @RequestParam("price_max") Optional<Integer> price_maxOptional, @RequestParam("type") Optional<String[]> typeOptional, @RequestParam("kind") Optional<String> kindOptional, @RequestParam("sort") Optional<String> sortOptional, HttpServletRequest request, HttpServletResponse response){
 		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
+			int page=pageOptional.orElse(1);
+			int price_min=price_minOptional.orElse(Integer.MIN_VALUE);
+			int price_max=price_maxOptional.orElse(Integer.MAX_VALUE);
+			String[] location=locationOptional.orElse(null);
+			String[] type=typeOptional.orElse(null);
+			String kind=kindOptional.orElse(null);
+			String sort=sortOptional.orElse(Constants.sortOptionId);
 			Listing[] resultListings;
-			if(page.isPresent()){
-				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, price_min, price_max, type, kind, sort, statistics);
-			}else{
-				resultListings=persistenceAdapter.getListingsFiltered(1, location, price_min, price_max, type, kind, sort, statistics);
-			}
+			resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -508,15 +514,18 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "listings/active", method = RequestMethod.GET)
-	public @ResponseBody String getActiveListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getActiveListings(@RequestParam("page") Optional<Integer> pageOptional, @RequestParam("location") Optional<String[]> locationOptional, @RequestParam("price_min") Optional<Integer> price_minOptional, @RequestParam("price_max") Optional<Integer> price_maxOptional, @RequestParam("type") Optional<String[]> typeOptional, @RequestParam("kind") Optional<String> kindOptional, @RequestParam("sort") Optional<String> sortOptional, HttpServletRequest request, HttpServletResponse response){
 		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
 			Listing[] resultListings;
-			if(page.isPresent()){
-				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, true, price_min, price_max, type, kind, sort, statistics);
-			}else{
-				resultListings=persistenceAdapter.getListingsFiltered(1, location, true, price_min, price_max, type, kind, sort, statistics);
-			}
+			int page=pageOptional.orElse(1);
+			int price_min=price_minOptional.orElse(Integer.MIN_VALUE);
+			int price_max=price_maxOptional.orElse(Integer.MAX_VALUE);
+			String[] location=locationOptional.orElse(null);
+			String[] type=typeOptional.orElse(null);
+			String kind=kindOptional.orElse(null);
+			String sort=sortOptional.orElse(Constants.sortOptionId);
+			resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
@@ -552,15 +561,18 @@ public class ListingRESTController {
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "listings/inactive", method = RequestMethod.GET)
-	public @ResponseBody String getInactiveListings(@RequestParam("page") Optional<Integer> page, @RequestParam("location") String[] location, @RequestParam("price_min") int price_min, @RequestParam("price_max") int price_max, @RequestParam("type") String[] type, @RequestParam("kind") String kind, @RequestParam("sort") String sort, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody String getInactiveListings(@RequestParam("page") Optional<Integer> pageOptional, @RequestParam("location") Optional<String[]> locationOptional, @RequestParam("price_min") Optional<Integer> price_minOptional, @RequestParam("price_max") Optional<Integer> price_maxOptional, @RequestParam("type") Optional<String[]> typeOptional, @RequestParam("kind") Optional<String> kindOptional, @RequestParam("sort") Optional<String> sortOptional, HttpServletRequest request, HttpServletResponse response){
 		try{
 			ListingSearchStatistics statistics=new ListingSearchStatistics();
 			Listing[] resultListings;
-			if(page.isPresent()){
-				resultListings=persistenceAdapter.getListingsFiltered(page.get(), location, false, price_min, price_max, type, kind, sort, statistics);
-			}else{
-				resultListings=persistenceAdapter.getListingsFiltered(1, location, false, price_min, price_max, type, kind, sort, statistics);
-			}
+			int page=pageOptional.orElse(1);
+			int price_min=price_minOptional.orElse(Integer.MIN_VALUE);
+			int price_max=price_maxOptional.orElse(Integer.MAX_VALUE);
+			String[] location=locationOptional.orElse(null);
+			String[] type=typeOptional.orElse(null);
+			String kind=kindOptional.orElse(null);
+			String sort=sortOptional.orElse(Constants.sortOptionId);
+			resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics);
 			return result.toString();
 		}catch(WrongFormatException e){
