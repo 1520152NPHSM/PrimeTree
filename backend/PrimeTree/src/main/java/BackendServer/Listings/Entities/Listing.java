@@ -43,7 +43,7 @@ public abstract class Listing {
 	private String title;
 	@OneToMany(mappedBy="listing",targetEntity=Comment.class,
 	fetch=FetchType.EAGER)
-	private Collection comments; 
+	private List<Comment> comments; 
 	private String type;
 	private String kind;
 
@@ -131,6 +131,9 @@ public abstract class Listing {
 	
 	public void addComment(Comment comment){
 		this.comments.add(comment);
+		if(comment.getListing()==null){
+			comment.setListing(this);
+		}
 	}
 
 	/**
