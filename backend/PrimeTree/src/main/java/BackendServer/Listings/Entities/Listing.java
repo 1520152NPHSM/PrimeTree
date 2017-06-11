@@ -220,7 +220,7 @@ public abstract class Listing {
 		json.put(Constants.listingDataFieldTitle, this.getTitle());
 		json.put(Constants.listingDataFieldListingType, this.getType());
 		json.put(Constants.listingDataFieldComments, this.commentsToJSONArray());
-		if(this.getExpiryDate()==null){
+		if(this.getExpiryDate()!=null){
 			json.put(Constants.listingDataFieldDeadLine, this.getExpiryDate().getTime());			
 		}
 		return json;

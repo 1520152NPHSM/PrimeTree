@@ -87,10 +87,10 @@ public class ListingRESTController {
 		try {
 			int newId = persistenceAdapter.persistNewListing(newListingData, getUserId());
 			result.put(Constants.responseFieldNewListingId, newId);
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (WrongFormatException thrownException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		response.setStatus(HttpServletResponse.SC_CREATED);
 		return result.toString();
     }
 
@@ -436,7 +436,7 @@ public class ListingRESTController {
 		Listing[] resultListings;
 		try{
 			resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
-			JSONObject result=this.createPage(resultListings, statistics);
+			JSONObject result=this.createPage(resultListings, statistics, page);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -484,7 +484,7 @@ public class ListingRESTController {
 			String sort=sortOptional.orElse(Constants.sortOptionId);
 			Listing[] resultListings;
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
-			JSONObject result=this.createPage(resultListings, statistics);
+			JSONObject result=this.createPage(resultListings, statistics, page);
 			return result.toString();
 		}catch(WrongFormatException e){
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -530,7 +530,7 @@ public class ListingRESTController {
 			String kind=kindOptional.orElse(null);
 			String sort=sortOptional.orElse(Constants.sortOptionId);
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
-			JSONObject result=this.createPage(resultListings, statistics);
+			JSONObject result=this.createPage(resultListings, statistics, page);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -577,7 +577,7 @@ public class ListingRESTController {
 			String kind=kindOptional.orElse(null);
 			String sort=sortOptional.orElse(Constants.sortOptionId);
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
-			JSONObject result=this.createPage(resultListings, statistics);
+			JSONObject result=this.createPage(resultListings, statistics, page);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -626,10 +626,10 @@ public class ListingRESTController {
 	 * @param statistics the search result statistics
 	 * @return a JSONObject representing the page
 	 */
-	private JSONObject createPage(Listing[] resultListings, ListingSearchStatistics statistics) {
+	private JSONObject createPage(Listing[] resultListings, ListingSearchStatistics statistics, int pageNumber) {
 		JSONObject page=new JSONObject();
-		JSONArray listingArray=new JSONArray(resultListings.clone());
-		for(int jsonArrayIndex=0;jsonArrayIndex<listingArray.length();jsonArrayIndex++){
+		JSONArray listingArray=new JSONArray();
+		for(int jsonArrayIndex=0;jsonArrayIndex<resultListings.length;jsonArrayIndex++){
 			listingArray.put(jsonArrayIndex, resultListings[jsonArrayIndex].toJSON());
 		}
 		this.addUserImagePropertyIntoAllComments(listingArray);
@@ -638,6 +638,7 @@ public class ListingRESTController {
 		page.put(Constants.listingSearchResultFieldPrice_Max, statistics.getPrice_max());
 		page.put(Constants.listingSearchResultFieldCount, statistics.getCount());
 		page.put(Constants.listingSearchResultFieldPages, statistics.getPages());
+		page.put(Constants.listingSearchResultFieldpageNumber, pageNumber);
 		return page;
 	}
 
