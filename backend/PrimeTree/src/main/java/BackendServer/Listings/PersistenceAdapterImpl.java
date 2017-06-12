@@ -322,7 +322,7 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 		int pageBeginning=(page-1)*Constants.pageSize,
 				pageEnd=Integer.min(page*Constants.pageSize, Integer.max(resultArray.length, 0)) ;
 		Arrays.sort(resultArray, this.createListingComparator(sort));
-		statistics.setPages((resultSet.size()-1)/50);
+		statistics.setPages((resultSet.size())/50+1);
 		statistics.setPrice_max(highestPriceFound);
 		statistics.setPrice_min(lowestPriceFound);
 		resultArray=Arrays.copyOfRange(resultArray, pageBeginning, pageEnd);

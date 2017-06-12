@@ -1,9 +1,9 @@
 package BackendServer.Listings.Entities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -46,6 +46,10 @@ public abstract class Listing {
 	private List<Comment> comments; 
 	private String type;
 	private String kind;
+	
+	public Listing(){
+		comments=new LinkedList<Comment>();
+	}
 
 	public long getListingId() {
 		return this.id;

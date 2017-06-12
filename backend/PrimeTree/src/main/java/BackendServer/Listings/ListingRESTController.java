@@ -139,6 +139,7 @@ public class ListingRESTController {
 			Listing foundListing=persistenceAdapter.getListingById(listingId);
 			result=foundListing.toJSON();
 			this.addUserImagePropertyIntoAllComments(new JSONArray().put(result));
+			response.setStatus(HttpServletResponse.SC_OK);
 			return result.toString();
 		} catch (ListingNotFoundException thrownException) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -161,6 +162,7 @@ public class ListingRESTController {
 	public @ResponseBody void editListing(@RequestBody final String body, @PathVariable(value="id") final int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			persistenceAdapter.edit(listingId, new JSONObject(body));
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (WrongFormatException e) {
@@ -181,6 +183,7 @@ public class ListingRESTController {
 		System.out.println("delete() aufgerufen");
 		try {
 			persistenceAdapter.deleteListingById(listingId);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
@@ -198,6 +201,7 @@ public class ListingRESTController {
     public @ResponseBody void activateListing(@PathVariable(value="id") final int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().put(Constants.listingDataFieldActive, true));
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (WrongFormatException e) {
@@ -217,6 +221,7 @@ public class ListingRESTController {
     public @ResponseBody void deactivateListing(@PathVariable(value="id") final int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			persistenceAdapter.edit(listingId, persistenceAdapter.getListingById(listingId).toJSON().put(Constants.listingDataFieldActive, false));
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (WrongFormatException e) {
@@ -259,6 +264,7 @@ public class ListingRESTController {
 	public @ResponseBody void deleteComment(@PathVariable(value="listingId") int commentId, @PathVariable(value="commentId") int listingId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			persistenceAdapter.deleteComment(commentId);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (CommentNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
@@ -279,6 +285,7 @@ public class ListingRESTController {
 			}
 			String publicPath=persistenceAdapter.uploadTemporaryImage(file.getBytes(), file.getOriginalFilename());
 			result.put("imagePath", publicPath);
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 		}
@@ -301,6 +308,7 @@ public class ListingRESTController {
 	public @ResponseBody void deleteTemporaryImage(HttpServletRequest request, HttpServletResponse response, @RequestParam("imagePath") String imagePath){
 		try {
 			persistenceAdapter.deleteTemporaryImage(imagePath);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (PathNotTemporaryException e) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
@@ -384,6 +392,7 @@ public class ListingRESTController {
 			persistenceAdapter.deleteImageInGallery(listingId, 1);
 			persistenceAdapter.deleteImageInGallery(listingId, 2);
 			persistenceAdapter.deleteImageInGallery(listingId, 3);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (NoImageGallerySupportedException e) {
@@ -437,6 +446,7 @@ public class ListingRESTController {
 		try{
 			resultListings=persistenceAdapter.getListingsBySearch(query, page, location, true, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics, page);
+			response.setStatus(HttpServletResponse.SC_OK);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -485,6 +495,7 @@ public class ListingRESTController {
 			Listing[] resultListings;
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics, page);
+			response.setStatus(HttpServletResponse.SC_OK);
 			return result.toString();
 		}catch(WrongFormatException e){
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -531,6 +542,7 @@ public class ListingRESTController {
 			String sort=sortOptional.orElse(Constants.sortOptionId);
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, true, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics, page);
+			response.setStatus(HttpServletResponse.SC_OK);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -578,6 +590,7 @@ public class ListingRESTController {
 			String sort=sortOptional.orElse(Constants.sortOptionId);
 			resultListings=persistenceAdapter.getListingsFiltered(page, location, false, price_min, price_max, type, kind, sort, statistics);
 			JSONObject result=this.createPage(resultListings, statistics, page);
+			response.setStatus(HttpServletResponse.SC_OK);
 			return result.toString();
 		}catch(WrongFormatException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -598,6 +611,7 @@ public class ListingRESTController {
 		JSONObject result=new JSONObject();
 		result.put(Constants.listingSearchResultFieldListings, new JSONArray(resultListings));
 		this.addUserImagePropertyIntoAllComments(result.getJSONArray("listings"));
+		response.setStatus(HttpServletResponse.SC_OK);
 		return result.toString();
 	}
 	

@@ -118,6 +118,7 @@ public class UserRestControllerTest {
     @Test
     public void userRESTControllerGetUsersTest(){
     	request = new MockHttpServletRequest("GET", "/users");
+    	response.setStatus(HttpServletResponse.SC_OK);
     	String result = testUserRESTController.getUsers(request, response);
     	assertEquals(HttpServletResponse.SC_OK, response.getStatus());
     }
