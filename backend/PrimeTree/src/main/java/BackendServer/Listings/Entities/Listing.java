@@ -121,7 +121,14 @@ public abstract class Listing {
 		return expiryDate!=null&&expiryDate.before(new Date());
 	}
 	
-	public void setImageOfGallery(String pathName, int galleryIndex) throws NoImageGallerySupportedException{
+	public void setImageOfGallery(String pathName, int galleryIndex) throws NoImageGallerySupportedException, IndexOutOfBoundsException{
+		for(int index=0;index<Constants.numberOfImagesPerGallery;index++){
+			try{
+				this.getImageGallery().get(index);
+			}catch(IndexOutOfBoundsException e){
+				this.getImageGallery().add(index, null);
+			}
+		}
 		this.getImageGallery().set(galleryIndex, pathName);
 	}
 

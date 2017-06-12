@@ -134,15 +134,19 @@ public abstract class ListingObjectController<L extends Listing> {
 	 * @param listingId the id of the commented listing
 	 * @throws ListingNotFoundException if no listing with id listingId exists
 	 */
-	public void comment(JSONObject commentData, long authorId, long listingId) throws ListingNotFoundException{
+	public void comment(JSONObject commentData, long authorId, long listingId) throws ListingNotFoundException, WrongFormatException{
 		L commentedListing=this.getListingById(listingId);
-		Comment newComment=new Comment();
-		newComment.setAuthorId(authorId);
-		newComment.setCreateDate(new Date(commentData.getLong(Constants.commentDataFieldDate)));
-		newComment.setText(commentData.getString(Constants.commentDataFieldMessage));
-		commentedListing.addComment(newComment);
-		this.listingRepository.save(commentedListing);
-//		this.commentRepository.save(newComment);
+		try{
+			Comment newComment=new Comment();
+			newComment.setAuthorId(authorId);
+			newComment.setCreateDate(new Date(commentData.getLong(Constants.commentDataFieldDate)));
+			newComment.setText(commentData.getString(Constants.commentDataFieldMessage));
+			commentedListing.addComment(newComment);
+			this.listingRepository.save(commentedListing);
+			this.commentRepository.save(newComment);
+		}catch(JSONException e){
+			throw new WrongFormatException("Wong Format of commentData");
+		}
 	}
 
 	/**This method deletes an imagePath from the imageGallery-List in a listing
