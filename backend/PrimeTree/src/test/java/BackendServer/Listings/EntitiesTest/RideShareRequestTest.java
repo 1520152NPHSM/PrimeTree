@@ -37,7 +37,7 @@ public class RideShareRequestTest {
 		JSONObjectforFillFields.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectforFillFields.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectforFillFields.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectforFillFields.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectforFillFields.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectforFillFields.put(Constants.listingDataFieldActive, true);
 		JSONObjectforFillFields.put(Constants.listingDataFieldFromLocation, "Mannheim");
 		JSONObjectforFillFields.put(Constants.listingDataFieldToLocation, "Koeln");

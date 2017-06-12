@@ -41,7 +41,7 @@ public class PurchaseRequestTest {
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldEndDate, endDate);
 		
@@ -69,7 +69,7 @@ public class PurchaseRequestTest {
 	@Test
 	public void purchaseRequestFillFieldsTestWithCorrectValues(){
 		testListing.fillFields(JSONObjectWithCorrectValues, 0);
-		assertEquals("new", testListing.getItemCondition());
+		assertEquals(Constants.allItemConditions.get(0), testListing.getItemCondition());
 	}
 
 	/**

@@ -36,7 +36,7 @@ public class ServiceOfferingTest {
 		initialiseJSONObject.put(Constants.listingDataFieldLocation, "Koeln");
 		initialiseJSONObject.put(Constants.listingDataFieldTitle, "test1");
 		initialiseJSONObject.put(Constants.listingDataFieldPrice, 0);
-		initialiseJSONObject.put(Constants.listingDataFieldCondition, "new");
+		initialiseJSONObject.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		initialiseJSONObject.put(Constants.listingDataFieldActive, true);
 		initialiseJSONObject.put(Constants.listingDataFieldPrice, 20);
 

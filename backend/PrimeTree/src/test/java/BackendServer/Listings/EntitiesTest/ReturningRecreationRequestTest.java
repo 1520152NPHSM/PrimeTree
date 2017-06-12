@@ -40,7 +40,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
@@ -58,7 +58,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithBadRegularity.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithBadRegularity.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithBadRegularity.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
@@ -76,7 +76,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithNoStartDate.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithNoStartDate.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
 		JSONObjectWithNoStartDate.put(Constants.listingDataFieldActivityLocation, "Mannheim");
@@ -93,7 +93,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithNoEndDate.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithNoEndDate.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
 		JSONObjectWithNoEndDate.put(Constants.listingDataFieldActivityLocation, "Mannheim");
@@ -110,7 +110,7 @@ public class ReturningRecreationRequestTest {
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithNoRegularity.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithNoRegularity.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithNoRegularity.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
