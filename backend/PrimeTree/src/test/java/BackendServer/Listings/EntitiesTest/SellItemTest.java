@@ -155,30 +155,5 @@ public class SellItemTest {
 		testListing.fillFields(obj1, 0);
 
 	}
-	// ------------------------------------- fillFields for imagelocation
-	// ------------------------------------
 
-	/**
-	 * Test fillFields with a boolean instead of a String in imagelocation
-	 * 
-	 * @throws WrongFormatException
-	 */
-	@Test(expected = JSONException.class)
-	public void fillFieldsTestWithBooleanImagelocation() throws WrongFormatException {
-		obj1.remove(Constants.listingDataFieldPicture);
-		obj1.put(Constants.listingDataFieldPicture, true);
-		testListing.fillFields(obj1, 0);
-	}
-
-	/**
-	 * Test fillFields with an int instead of a String in imagelocation
-	 * 
-	 * @throws WrongFormatException
-	 */
-	@Test(expected = JSONException.class)
-	public void fillFieldsTestWithIntImagelocation() throws WrongFormatException {
-		obj1.remove(Constants.listingDataFieldPicture);
-		obj1.put(Constants.listingDataFieldPicture, 21);
-		testListing.fillFields(obj1, 0);
-	}
 }
