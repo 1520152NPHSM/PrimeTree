@@ -87,6 +87,7 @@ public class UserRESTController {
     public @ResponseBody void postFavourite(@RequestParam final int listingId, HttpServletRequest request, HttpServletResponse response) throws UsernameNotFoundException, UserNotFoundException{
 		try {
 			userManager.addFavourite(getRequestersUserId(), listingId);
+			response.setStatus(HttpServletResponse.SC_CREATED);
 		} catch (FavouriteAlreadyExistsException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		} 

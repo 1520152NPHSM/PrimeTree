@@ -45,6 +45,9 @@ public class ReturningRecreationRequest extends RecreationRequest{
 	@Override
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException {
 		super.fillFields(listingData, creator);
+		if(listingData.isNull(Constants.listingDataFieldRegularity)){
+			throw new WrongFormatException("Missing required fields");
+		}
 		if(listingData.isNull(Constants.listingDataFieldRegularity) ||
 				!Constants.allRegularityOptions.contains(listingData.getString(Constants.listingDataFieldRegularity))){
 			throw new WrongFormatException("Bad Regularity");

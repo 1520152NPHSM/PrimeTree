@@ -84,7 +84,8 @@ public class Constants {
 	listingSearchResultFieldPrice_Min="price_min",
 	listingSearchResultFieldPrice_Max="price_max",
 	listingSearchResultFieldCount="count",
-	listingSearchResultFieldPages="page";
+	listingSearchResultFieldPages="pages",
+	listingSearchResultFieldpageNumber="pageNumber";
 	
 	//The following Strings are the names of the fields in a JSONObject representing a user
 	public static final String
@@ -136,8 +137,8 @@ public class Constants {
 
 	private static List<String> allItemConditions() {
 		List<String> allOptions=new LinkedList<String>();
-		allOptions.add("new");
-		allOptions.add("used");
+		allOptions.add("New");
+		allOptions.add("Used");
 		return allOptions;
 	}
 

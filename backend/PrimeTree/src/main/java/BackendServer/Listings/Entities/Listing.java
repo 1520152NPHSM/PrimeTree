@@ -43,7 +43,7 @@ public abstract class Listing {
 	private String title;
 	@OneToMany(mappedBy="listing",targetEntity=Comment.class,
 	fetch=FetchType.EAGER)
-	private Collection comments; 
+	private List<Comment> comments; 
 	private String type;
 	private String kind;
 
@@ -131,6 +131,9 @@ public abstract class Listing {
 	
 	public void addComment(Comment comment){
 		this.comments.add(comment);
+		if(comment.getListing()==null){
+			comment.setListing(this);
+		}
 	}
 
 	/**
@@ -217,7 +220,7 @@ public abstract class Listing {
 		json.put(Constants.listingDataFieldTitle, this.getTitle());
 		json.put(Constants.listingDataFieldListingType, this.getType());
 		json.put(Constants.listingDataFieldComments, this.commentsToJSONArray());
-		if(this.getExpiryDate()==null){
+		if(this.getExpiryDate()!=null){
 			json.put(Constants.listingDataFieldDeadLine, this.getExpiryDate().getTime());			
 		}
 		return json;

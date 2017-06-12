@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -77,11 +78,11 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         return super.attemptAuthentication(request, response);
     }
     
-    public MyUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager){
+    public MyUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationSuccessHandler loginSuccessHandler){
     	this.setRequiresAuthenticationRequestMatcher(
 	    new AntPathRequestMatcher("/user/login","POST"));
     	this.setAuthenticationManager(authenticationManager);
-    	this.setAuthenticationSuccessHandler(new MyLoginSuccessHandler());
+    	this.setAuthenticationSuccessHandler(loginSuccessHandler);
     	this.setAuthenticationFailureHandler(new MyLoginFailureHandler());
     	this.setUsernameParameter("username");
     	this.setPasswordParameter("password");

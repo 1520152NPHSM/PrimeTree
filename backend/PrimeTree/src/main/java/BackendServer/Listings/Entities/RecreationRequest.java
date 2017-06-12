@@ -45,6 +45,10 @@ public abstract class RecreationRequest extends RequestListing{
 	@Override
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException {
 		super.fillFields(listingData, creator);
+		if(listingData.isNull(Constants.listingDataFieldFreeTimeActivityCategory)
+				|| listingData.isNull(Constants.listingDataFieldActivityLocation)){
+			throw new WrongFormatException("Missing required fields");
+		}
 		if(!Constants.allFreeTimeActivityCategories.contains(listingData.getString(Constants.listingDataFieldFreeTimeActivityCategory))){
 			throw new WrongFormatException("This Category does not exist");
 		}

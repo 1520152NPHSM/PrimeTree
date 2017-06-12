@@ -142,7 +142,7 @@ public abstract class ListingObjectController<L extends Listing> {
 		newComment.setText(commentData.getString(Constants.commentDataFieldMessage));
 		commentedListing.addComment(newComment);
 		this.listingRepository.save(commentedListing);
-		this.commentRepository.save(newComment);
+//		this.commentRepository.save(newComment);
 	}
 
 	/**This method deletes an imagePath from the imageGallery-List in a listing

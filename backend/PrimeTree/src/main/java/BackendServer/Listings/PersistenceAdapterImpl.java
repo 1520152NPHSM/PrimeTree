@@ -308,20 +308,19 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 		Collection<Listing> resultSet=getAllListings();
 		Iterator<? extends Listing> listingIterator=resultSet.iterator();
 		double lowestPriceFound=Integer.MAX_VALUE;
-		double highestPriceFound=0;
+		double highestPriceFound=Integer.MIN_VALUE;
 		while(listingIterator.hasNext()){
 			Listing checkedListing=listingIterator.next();
 			if(!listingFilterer.checkIfListingMatches(checkedListing)){
 				listingIterator.remove();
-			}else if(checkedListing.getPrice()<lowestPriceFound){
-				lowestPriceFound=checkedListing.getPrice();
-			}else if(checkedListing.getPrice()>highestPriceFound){
-				highestPriceFound=checkedListing.getPrice();
+			}else{
+				lowestPriceFound=Double.min(lowestPriceFound, checkedListing.getPrice());
+				highestPriceFound=Double.max(highestPriceFound, checkedListing.getPrice());
 			}
 		}
 		Listing[] resultArray=SimpleMethods.parseObjectArrayToListingArray(resultSet.toArray());
 		int pageBeginning=(page-1)*Constants.pageSize,
-				pageEnd=Integer.min(page*Constants.pageSize, Integer.max(resultArray.length-1, 0)) ;
+				pageEnd=Integer.min(page*Constants.pageSize, Integer.max(resultArray.length, 0)) ;
 		Arrays.sort(resultArray, this.createListingComparator(sort));
 		statistics.setPages((resultSet.size()-1)/50);
 		statistics.setPrice_max(highestPriceFound);
@@ -605,15 +604,19 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 	 * @return local pathname
 	 * @throws IOException if the originalFilename hints, that the file is not an image file*/
 	private String getImageFileTypeEnding(String originalFilename) throws IOException{
-		String ending=originalFilename.substring(originalFilename.length()-4).toLowerCase();
-		if(".png".equals(ending)||".jpg".equals(ending)){
-			return ending;
-		}else{
-			ending=originalFilename.substring(originalFilename.length()-5).toLowerCase();
-			if(".jpeg".equals(ending)){
+		try{
+			String ending=originalFilename.substring(originalFilename.length()-4).toLowerCase();
+			if(".png".equals(ending)||".jpg".equals(ending)){
 				return ending;
+			}else{
+				ending=originalFilename.substring(originalFilename.length()-5).toLowerCase();
+				if(".jpeg".equals(ending)){
+					return ending;
+				}
+				throw new IOException("The given file is neither a .png, .jpeg nor .jpg file.");
 			}
-			throw new IOException("The given file is neither a .png, .jpeg nor .jpg file.");
+		}catch(StringIndexOutOfBoundsException originalFilenameIsNotLongEnoughException){
+			throw new IOException("The filename is not long enough");
 		}
 	}
 	

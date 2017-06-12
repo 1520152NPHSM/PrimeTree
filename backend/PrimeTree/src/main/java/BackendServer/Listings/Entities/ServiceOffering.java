@@ -76,6 +76,9 @@ public class ServiceOffering extends Offering {
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException {
 		super.fillFields(listingData, creator);
 		if(listingData.isNull(Constants.listingDataFieldPrice)){
+			throw new WrongFormatException("Missing required fields");
+		}
+		if(listingData.isNull(Constants.listingDataFieldPrice)){
 			throw new WrongFormatException("Missing required field(s)");
 		}
 		this.setPrice(listingData.getDouble(Constants.listingDataFieldPrice));

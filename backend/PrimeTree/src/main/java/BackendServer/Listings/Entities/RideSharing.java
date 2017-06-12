@@ -97,6 +97,11 @@ public class RideSharing extends Offering {
 	@Override
 	public void fillFields(JSONObject listingData, long creator) throws WrongFormatException {
 		super.fillFields(listingData, creator);
+		if(listingData.isNull(Constants.listingDataFieldFromLocation)
+				|| listingData.isNull(Constants.listingDataFieldToLocation)
+				|| listingData.isNull(Constants.listingDataFieldTravelDateAndTime)){
+			throw new WrongFormatException("Missing required fields");
+		}
 		this.setFromLocation(listingData.getString(Constants.listingDataFieldFromLocation));
 		if(!listingData.isNull(Constants.listingDataFieldJourneyStops)){
 			this.setJourneyStops(SimpleMethods.parseJSONArrayToStringList(listingData.getJSONArray(Constants.listingDataFieldJourneyStops)));
