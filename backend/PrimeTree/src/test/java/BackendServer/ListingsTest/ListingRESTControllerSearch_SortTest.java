@@ -89,7 +89,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing1.put(Constants.listingDataFieldCreateDate, createDate);
 		listing1.put(Constants.listingDataFieldDeadLine, expiryDate + 1000);
 		listing1.put(Constants.listingDataFieldPrice, 150);
-		listing1.put(Constants.listingDataFieldCondition, "used");
+		listing1.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing2 = new JSONObject();
 		listing2.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -99,7 +99,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing2.put(Constants.listingDataFieldCreateDate, createDate);
 		listing2.put(Constants.listingDataFieldDeadLine, expiryDate + 1200);
 		listing2.put(Constants.listingDataFieldPrice, 21.99);
-		listing2.put(Constants.listingDataFieldCondition, "used");
+		listing2.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing3 = new JSONObject();
 		listing3.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -109,7 +109,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing3.put(Constants.listingDataFieldCreateDate, createDate + 10);
 		listing3.put(Constants.listingDataFieldDeadLine, expiryDate + 120);
 		listing3.put(Constants.listingDataFieldPrice, 27.99);
-		listing3.put(Constants.listingDataFieldCondition, "new");
+		listing3.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing4 = new JSONObject();
 		listing4.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -119,7 +119,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing4.put(Constants.listingDataFieldCreateDate, createDate);
 		listing4.put(Constants.listingDataFieldDeadLine, expiryDate + 1200);
 		listing4.put(Constants.listingDataFieldPrice, 10378.99);
-		listing4.put(Constants.listingDataFieldCondition, "used");
+		listing4.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing5 = new JSONObject();
 		listing5.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -129,7 +129,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing5.put(Constants.listingDataFieldCreateDate, createDate);
 		listing5.put(Constants.listingDataFieldDeadLine, expiryDate + 1200);
 		listing5.put(Constants.listingDataFieldPrice, 12);
-		listing5.put(Constants.listingDataFieldCondition, "new");
+		listing5.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing6 = new JSONObject();
 		listing6.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -139,7 +139,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing6.put(Constants.listingDataFieldCreateDate, createDate);
 		listing6.put(Constants.listingDataFieldDeadLine, expiryDate + 1200);
 		listing6.put(Constants.listingDataFieldPrice, 25.99);
-		listing6.put(Constants.listingDataFieldCondition, "new");
+		listing6.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing7 = new JSONObject();
 		listing7.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -149,7 +149,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing7.put(Constants.listingDataFieldCreateDate, createDate);
 		listing7.put(Constants.listingDataFieldDeadLine, expiryDate + 120);
 		listing7.put(Constants.listingDataFieldPrice, 21.99);
-		listing7.put(Constants.listingDataFieldCondition, "used");
+		listing7.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing8 = new JSONObject();
 		listing8.put(Constants.listingDataFieldListingType, Constants.listingTypeNameSellItem);
@@ -159,7 +159,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing8.put(Constants.listingDataFieldCreateDate, createDate);
 		listing8.put(Constants.listingDataFieldDeadLine, expiryDate + 1200);
 		listing8.put(Constants.listingDataFieldPrice, 1.99);
-		listing8.put(Constants.listingDataFieldCondition, "used");
+		listing8.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 		
 		//------------------------------------------------- RideSharing-----------------------------------------------
 
@@ -424,7 +424,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing33.put(Constants.listingDataFieldActivityLocation, "Karlsruhe");
 		listing33.put(Constants.listingDataFieldCreateDate, createDate);
 		listing33.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing33.put(Constants.listingDataFieldCondition, "new");
+		listing33.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing34 = new JSONObject();
 		listing34.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -433,7 +433,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing34.put(Constants.listingDataFieldActivityLocation, "München");
 		listing34.put(Constants.listingDataFieldCreateDate, createDate);
 		listing34.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing34.put(Constants.listingDataFieldCondition, "new");
+		listing34.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		listing34 = new JSONObject();
 
 		listing35.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -442,7 +442,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing35.put(Constants.listingDataFieldActivityLocation, "Mannheim");
 		listing35.put(Constants.listingDataFieldCreateDate, createDate);
 		listing35.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing35.put(Constants.listingDataFieldCondition, "new");
+		listing35.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing36 = new JSONObject();
 		listing36.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -451,7 +451,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing36.put(Constants.listingDataFieldActivityLocation, "Karlsruhe");
 		listing36.put(Constants.listingDataFieldCreateDate, createDate);
 		listing36.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing36.put(Constants.listingDataFieldCondition, "used");
+		listing36.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing37 = new JSONObject();
 		listing37.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -460,7 +460,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing37.put(Constants.listingDataFieldActivityLocation, "Karlsruhe");
 		listing37.put(Constants.listingDataFieldCreateDate, createDate);
 		listing37.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing37.put(Constants.listingDataFieldCondition, "new");
+		listing37.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 
 		listing38 = new JSONObject();
 		listing38.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -469,7 +469,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing38.put(Constants.listingDataFieldActivityLocation, "Karlsruhe");
 		listing38.put(Constants.listingDataFieldCreateDate, createDate);
 		listing38.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing38.put(Constants.listingDataFieldCondition, "used");
+		listing38.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing39 = new JSONObject();
 		listing39.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
@@ -478,7 +478,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing39.put(Constants.listingDataFieldActivityLocation, "Köln");
 		listing39.put(Constants.listingDataFieldCreateDate, createDate);
 		listing39.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
-		listing39.put(Constants.listingDataFieldCondition, "used");
+		listing39.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(1));
 
 		listing40 = new JSONObject();
 		listing40.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);

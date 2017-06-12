@@ -41,7 +41,7 @@ public class SingleRecreatingRequestTest {
 		JSONObjectforTesting.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectforTesting.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectforTesting.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectforTesting.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectforTesting.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectforTesting.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectforTesting.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectforTesting.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");

@@ -36,7 +36,7 @@ public class BorrowRequestTest {
 		initialiseJSONOject.put(Constants.listingDataFieldLocation, "Koeln");
 		initialiseJSONOject.put(Constants.listingDataFieldTitle, "test1");
 		initialiseJSONOject.put(Constants.listingDataFieldPrice, 0);
-		initialiseJSONOject.put(Constants.listingDataFieldCondition, "new");
+		initialiseJSONOject.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		initialiseJSONOject.put(Constants.listingDataFieldBorrowFromDate, dateOne);
 		initialiseJSONOject.put(Constants.listingDataFieldBorrowToDate, dateTwo);
 	}

@@ -39,7 +39,7 @@ public class RecreationRequestTest {
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithCorrectValues.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithCorrectValues.put(Constants.listingDataFieldFreeTimeActivityCategory, "Sport");
@@ -57,7 +57,7 @@ public class RecreationRequestTest {
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldLocation, "Koeln");
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldTitle, "test1");
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldPrice, 0);
-		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldCondition, "new");
+		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldStartDate, startDate);
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldEndDate, endDate);
 		JSONObjectWithWrongFreeTimeActivityCategory.put(Constants.listingDataFieldFreeTimeActivityCategory, "falsch");
