@@ -33,6 +33,7 @@ public class StatisticsRESTController {
 		for(User registeredUser : userManager.getAllUsers()){
 			globalStatistics.registerUser(registeredUser);
 		}
+		response.setStatus(HttpServletResponse.SC_OK);
 		return globalStatistics.toJSON().toString();
 	}
 

@@ -49,6 +49,7 @@ public class UserRESTController {
 		try {
 			User foundUser=userManager.loadUserById(userId);
 			result=foundUser.toJSON();
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (UserNotFoundException thrownException) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
@@ -66,11 +67,12 @@ public class UserRESTController {
     public @ResponseBody String getUsers( HttpServletRequest request, HttpServletResponse response){
 		JSONObject result=new JSONObject();
 		User[] allUsers=userManager.getAllUsers();
-		JSONArray allUsersAsJSON=new JSONArray(allUsers.length);
+		JSONArray allUsersAsJSON=new JSONArray(allUsers.clone());
 		for(int index=0;index<allUsers.length;index++){
 			allUsersAsJSON.put(index, allUsers[index].toJSON());
 		}
 		result.put(Constants.responseFieldUsers, allUsersAsJSON);
+		response.setStatus(HttpServletResponse.SC_OK);
 		return result.toString();
 	}
 	
@@ -106,6 +108,7 @@ public class UserRESTController {
     public @ResponseBody void deleteFavourite(@RequestParam final int listingId, HttpServletRequest request, HttpServletResponse response) throws UsernameNotFoundException, UserNotFoundException{
 		try {
 			userManager.removeFavourite(getRequestersUserId(), listingId); 
+			response.setStatus(HttpServletResponse.SC_OK);
 			} catch (FavouriteNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
@@ -123,6 +126,7 @@ public class UserRESTController {
     public @ResponseBody String getFavourites(HttpServletRequest request, HttpServletResponse response) throws UsernameNotFoundException, UserNotFoundException{
 		JSONObject result=new JSONObject();
 		result.put(Constants.responseFieldFavouriteList, userManager.getFavouriteList(getRequestersUserId()));
+		response.setStatus(HttpServletResponse.SC_OK);
 		return result.toString();		
 	}
 	
@@ -138,6 +142,7 @@ public class UserRESTController {
     public @ResponseBody void declareAdmin(@PathVariable(value="id") final int userId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			userManager.setIsAdminOnUser(userId, true);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (UserNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (UserHadAlreadyTheRightAdminStatusException e) {
@@ -157,6 +162,7 @@ public class UserRESTController {
     public @ResponseBody void deleteAdmin(@PathVariable(value="id") final int userId, HttpServletRequest request, HttpServletResponse response){
 		try {
 			userManager.setIsAdminOnUser(userId, false);
+			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (UserNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		} catch (UserHadAlreadyTheRightAdminStatusException e) {
