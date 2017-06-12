@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,8 +67,12 @@ public class ListingRestControllerTest{
  
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
+    private Optional<Integer> pageOptional, price_minOptional, price_maxOptional;
+    private Optional<String> sortOptional, kindOptional;
+    private Optional<String[]> locationOptional, typeOptional;
     
-
+    
+    
     InputStream inputFileStream, inputFileStreamZwei, inputFileStreamDrei, inputFileStreamVier, inputFileStreamFuenf;
     MockMultipartFile file, fileZwei, fileDrei, fileVier, fileFuenf;
     
@@ -77,7 +82,7 @@ public class ListingRestControllerTest{
     	// wir haben hier nun unser erstes parameter erstellt
     	requestBody = new JSONObject();
     	requestBody.put(Constants.listingDataFieldListingType, Constants.listingTypeNameServiceOffering);
-    	requestBody.put(Constants.listingDataFieldDescription, "gut");
+    	requestBody.put(Constants.listingDataFieldDescription, Constants.allFreeTimeActivityCategories.get(0));
     	requestBody.put(Constants.listingDataFieldCreateDate, new Date().getTime());
     	requestBody.put(Constants.listingDataFieldTitle, "Superangebot");
     	requestBody.put(Constants.listingDataFieldDeadLine, (long) Integer.MAX_VALUE);
@@ -85,11 +90,20 @@ public class ListingRestControllerTest{
     	requestBody.put(Constants.listingDataFieldPrice, 20.99);
     	requestBodyString = requestBody.toString();
     	
-    	query = "gut";
+    	query = Constants.allFreeTimeActivityCategories.get(0);
+    	// Setup Otionals
     	typeArray = new String[1];
     	typeArray[0]= Constants.listingTypeNameServiceOffering;
+    	typeOptional = Optional.of(typeArray);
     	locationArray = new String[1];
     	locationArray[0]="Mannheim";
+    	locationOptional = Optional.of(locationArray);
+    	pageOptional = Optional.of(1);
+    	price_maxOptional = Optional.of(22);
+    	price_minOptional = Optional.of(20);
+    	kindOptional = Optional.of(Constants.listingKindOffering);
+    	sortOptional = Optional.of(Constants.sortOptionAlphabetical_Asc);
+    	
     	
     	commentRequestBody = new JSONObject();
     	commentRequestBody.put(Constants.listingDataFieldCreateDate, new Date().getTime());
@@ -736,7 +750,7 @@ public class ListingRestControllerTest{
 			request = new MockHttpServletRequest("POST", "listing");
 			String result = testRESTController.createListing(requestBodyString, request, response);
 			request = new MockHttpServletRequest("GET", "listings/search");
-			result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, 22, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+			result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 			assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -750,8 +764,8 @@ public class ListingRestControllerTest{
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		query = "Staubsauger!!1111einseinself";
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, 22, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	/**
@@ -763,7 +777,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(null, 1, locationArray, 20, 22, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+		result = testRESTController.getListingsBySearch(null, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -776,7 +790,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, locationArray, Integer.MAX_VALUE, 22, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+		price_minOptional = Optional.of(Integer.MAX_VALUE);
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -789,7 +804,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, Integer.MIN_VALUE, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+		price_maxOptional = Optional.of(Integer.MIN_VALUE);
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
@@ -802,7 +818,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, null, 20, 22, typeArray, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+		locationOptional = Optional.empty();
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -815,7 +832,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, 22, null, Constants.listingKindOffering, Constants.sortOptionAlphabetical_Asc, request, response);
+		typeOptional = Optional.empty();
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -828,7 +846,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/search");
-		result = testRESTController.getListingsBySearch(query, 1, locationArray, 20, 22, typeArray, null, Constants.sortOptionAlphabetical_Asc, request, response);
+		kindOptional = Optional.empty();
+		result = testRESTController.getListingsBySearch(query, pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional, sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -842,8 +861,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, locationArray, 20, 22, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -855,8 +874,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, null, 20, 22, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		locationOptional = Optional.empty();
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -868,8 +888,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, locationArray, 20, 22, null, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		typeOptional = Optional.empty();
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -881,8 +902,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, locationArray, 20, 22, typeArray, null,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		kindOptional = Optional.empty();
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -894,8 +916,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, locationArray, 20, Integer.MIN_VALUE, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		price_maxOptional = Optional.of(Integer.MIN_VALUE);
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 		assertEquals(0, result.length());
 	}
@@ -908,8 +931,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/active");
-		result = testRESTController.getActiveListings(1, locationArray, Integer.MAX_VALUE, 22, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		price_minOptional = Optional.of(Integer.MAX_VALUE);
+		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 		assertEquals(0, result.length());
 	}
@@ -926,8 +950,8 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		result = testRESTController.getInactiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -939,8 +963,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, null, 20, 22, typeArray, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		locationOptional = Optional.empty();
+		result = testRESTController.getInactiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -953,8 +978,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, null, Constants.listingKindOffering,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		typeOptional = Optional.empty();
+		result = testRESTController.getInactiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -967,8 +993,9 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("POST", "listing");
 		String result = testRESTController.createListing(requestBodyString, request, response);
 		request = new MockHttpServletRequest("GET", "listings/inactive");
-		result = testRESTController.getInactiveListings(1, locationArray, 20, 22, typeArray, null,
-				Constants.sortOptionAlphabetical_Asc, request, response);
+		kindOptional = Optional.empty();
+		result = testRESTController.getInactiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
+				sortOptional, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
