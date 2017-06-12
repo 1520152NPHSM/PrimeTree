@@ -1562,12 +1562,12 @@ public class PersistenceAdapterTest {
 		Comment createdComment=commentedListing.getComments().iterator().next();
 		assertEquals(validCommentData.getString(Constants.commentDataFieldMessage),
 				createdComment.getText());
-		assertEquals(validCommentData.getLong(Constants.commentDataFieldDate), createdComment.getCreateDate());
+		assertEquals(validCommentData.getLong(Constants.commentDataFieldDate), createdComment.getCreateDate().getTime());
 		assertEquals(1, createdComment.getAuthorId());
 	}
 	
 	@Test(expected=WrongFormatException.class)
-	public void testCommentWithMissingreateDate() throws ListingNotFoundException{
+	public void testCommentWithMissingCreateDate() throws ListingNotFoundException{
 		long listingId=persistenceAdapter.persistNewListing(correctListingDataForBorrowRequestCreateWithAllOptionalFieldsInBorrowRequest, 0);
 		persistenceAdapter.comment(commentDataWithMissingCreateDate, 1, listingId);
 	}

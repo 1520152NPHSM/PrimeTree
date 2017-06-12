@@ -388,10 +388,10 @@ public class ListingRESTController {
 	public @ResponseBody void listingGalleryDelete(@PathVariable(value="listingId") final int listingId,
 	HttpServletRequest request, HttpServletResponse response){
 		try {
-			persistenceAdapter.deleteImageInGallery(listingId, 0);
-			persistenceAdapter.deleteImageInGallery(listingId, 1);
-			persistenceAdapter.deleteImageInGallery(listingId, 2);
-			persistenceAdapter.deleteImageInGallery(listingId, 3);
+			try{persistenceAdapter.deleteImageInGallery(listingId, 0);}catch(IndexOutOfBoundsException e){/*Do nothing*/}
+			try{persistenceAdapter.deleteImageInGallery(listingId, 1);}catch(IndexOutOfBoundsException e){/*Do nothing*/}
+			try{persistenceAdapter.deleteImageInGallery(listingId, 2);}catch(IndexOutOfBoundsException e){/*Do nothing*/}
+			try{persistenceAdapter.deleteImageInGallery(listingId, 3);}catch(IndexOutOfBoundsException e){/*Do nothing*/}
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ListingNotFoundException e) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);

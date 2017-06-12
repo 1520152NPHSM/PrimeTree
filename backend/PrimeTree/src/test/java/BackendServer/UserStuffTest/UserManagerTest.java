@@ -69,7 +69,7 @@ public class UserManagerTest {
 	
 	@Test(expected=UserNotFoundException.class)
 	public void loadUserByIdWithUserIdExistingOnlyInEmployeeDataTest() throws UserNotFoundException{
-		userManager.loadUserById(3);
+		userManager.loadUserById(1);
 	}
 	
 	@Test(expected=UserNotFoundException.class)
@@ -91,7 +91,7 @@ public class UserManagerTest {
 	
 	@Test(expected=UserNotFoundException.class)
 	public void setIsAdminOnUserWithUserIdExistingOnlyInEmployeeDataTest() throws UserNotFoundException, UserHadAlreadyTheRightAdminStatusException{
-		userManager.setIsAdminOnUser(3, true);
+		userManager.setIsAdminOnUser(1, true);
 	}
 	
 	@Test(expected=UserNotFoundException.class)
@@ -119,7 +119,7 @@ public class UserManagerTest {
 	
 	@Test(expected=UserNotFoundException.class)
 	public void getFvouriteListWithUserIdExistingOnlyInEmployeeDataTest() throws UserNotFoundException{
-		userManager.getFavouriteList(3);
+		userManager.getFavouriteList(1);
 	}
 	
 	@Test(expected=UserNotFoundException.class)
@@ -142,7 +142,7 @@ public class UserManagerTest {
 	
 	@Test(expected=UserNotFoundException.class)
 	public void addFavouriteWithUserIdExistingOnlyInEmployeeDataTest() throws UserNotFoundException, FavouriteAlreadyExistsException{
-		userManager.addFavourite(3, 0);
+		userManager.addFavourite(1, 0);
 	}
 	
 	@Test(expected=UserNotFoundException.class)
@@ -168,7 +168,7 @@ public class UserManagerTest {
 	
 	@Test(expected=UserNotFoundException.class)
 	public void removeFavouriteWithUserIdExistingOnlyInEmployeeDataTest() throws UserNotFoundException, FavouriteNotFoundException{
-		userManager.removeFavourite(3, 0);
+		userManager.removeFavourite(1, 0);
 	}
 	
 	@Test(expected=UserNotFoundException.class)

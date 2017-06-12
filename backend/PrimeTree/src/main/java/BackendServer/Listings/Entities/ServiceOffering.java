@@ -46,6 +46,9 @@ public class ServiceOffering extends Offering {
 
 	public void setImageGallery(ArrayList<String> imageGallery) {
 		this.imageGallery =imageGallery;
+		for(int imagesLeft=this.imageGallery.size();imagesLeft<Constants.numberOfImagesPerGallery;imagesLeft++){
+			imageGallery.add(imageGallery.size(), null);
+		}
 	}
 
 	public String getPicture() {
