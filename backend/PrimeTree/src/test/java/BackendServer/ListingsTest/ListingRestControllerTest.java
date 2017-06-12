@@ -60,7 +60,7 @@ public class ListingRestControllerTest{
     private SecurityContext secCon;
     private Authentication auth;
     
-    private JSONObject requestBody, commentRequestBody, resultJSON;
+    private JSONObject requestBody, commentRequestBody, resultJSON, listingJSON;
     private String requestBodyString, commentRequestBodyString, query;
     private String[] locationArray, typeArray;
     private int listingID;
@@ -174,7 +174,7 @@ public class ListingRestControllerTest{
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("GET", "listing/{id}");
 		result = testRESTController.getListing(listingID, request, response);
-		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	/**
@@ -282,7 +282,7 @@ public class ListingRestControllerTest{
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/deactivate");
 		testRESTController.deactivateListing(listingID, request, response);
-		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	/**
@@ -312,7 +312,7 @@ public class ListingRestControllerTest{
 		testRESTController.deactivateListing(listingID, request, response);
 		request = new MockHttpServletRequest("POST", "listing/{id}/activate");
 		testRESTController.activateListing(listingID, request, response);
-		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	/**
@@ -365,8 +365,10 @@ public class ListingRestControllerTest{
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("POST", "listing/{id}/comment");
 		testRESTController.postComment(listingID, commentRequestBodyString, request, response);
+		request = new MockHttpServletRequest("GET", "listing/{id}");
+		int commentID = new JSONObject(testRESTController.getListing(listingID, request, response)).getJSONArray(Constants.listingDataFieldComments).getJSONObject(0).getInt(Constants.commentDataFieldCommentId);
 		request = new MockHttpServletRequest("DELETE", "listing/{listingId}/comment/{commentId}");
-		testRESTController.deleteComment(0, listingID, request, response);
+		testRESTController.deleteComment(commentID, listingID, request, response);
 		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
@@ -721,23 +723,7 @@ public class ListingRestControllerTest{
 		request = new MockHttpServletRequest("DELETE", "listing/upload/gallery/{listingId}/{galleryIndex}");
 		testRESTController.listingGalleryDelete(-1, request, response);
 		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
-	}
 	
-	/**
-	 * Test listingGalleryDelete with wrong Gallery id
-	 */
-	@Test
-	public void listingGalleryDeleteTestWithWrongGalleryId(){
-		// Setup
-		request = new MockHttpServletRequest("POST", "listing");
-		String result = testRESTController.createListing(requestBodyString, request, response);
-		resultJSON = new JSONObject(result);
-		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
-		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
-		testRESTController.galleryImageUpload(listingID, 0, request, response, file);
-		request = new MockHttpServletRequest("DELETE", "listing/upload/gallery/{listingId}/{galleryIndex}");
-		testRESTController.listingGalleryDelete(listingID,  request, response);
-		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 	}
 	
 	//------------------------------------------getListingsBySearch ---------------------------------------
@@ -919,7 +905,7 @@ public class ListingRestControllerTest{
 		price_maxOptional = Optional.of(Integer.MIN_VALUE);
 		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
 				sortOptional, request, response);
-		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 		assertEquals(0, result.length());
 	}
 	
@@ -934,7 +920,7 @@ public class ListingRestControllerTest{
 		price_minOptional = Optional.of(Integer.MAX_VALUE);
 		result = testRESTController.getActiveListings(pageOptional, locationOptional, price_minOptional, price_maxOptional, typeOptional, kindOptional,
 				sortOptional, request, response);
-		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+		assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
 		assertEquals(0, result.length());
 	}
 	
