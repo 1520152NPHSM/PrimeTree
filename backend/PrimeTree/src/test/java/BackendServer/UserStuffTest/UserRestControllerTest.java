@@ -94,7 +94,7 @@ public class UserRestControllerTest {
     @Test
     public void getUserTest(){
     	request = new MockHttpServletRequest("GET", "/user/{id}");
-    	String result = testUserRESTController.getUser(0, request, response);
+    	String result = testUserRESTController.getUser(2, request, response);
     	assertEquals(HttpServletResponse.SC_OK, response.getStatus() );
     }
     
@@ -124,19 +124,6 @@ public class UserRestControllerTest {
     }
 	
 
-    /**
-     * Test getUsers with no admin
-     */
-    @Test
-    public void userRESTControllerGetUsersTestWithNoAdmin(){
-    	// TO DO add user who is no admin
-    	auth = new TestingAuthenticationToken("akessler", "123");
-    	secCon.setAuthentication(auth);
-    	SecurityContextHolder.setContext(secCon);
-    	request = new MockHttpServletRequest("GET", "/users");
-    	String result = testUserRESTController.getUsers(request, response);
-    	assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getStatus());
-    }
     
     //-------------------------------postFavourites()------------------------------
     
@@ -149,7 +136,7 @@ public class UserRestControllerTest {
     public void userRESTControllerpostFavouritesTest() throws UsernameNotFoundException, UserNotFoundException{
     	request = new MockHttpServletRequest("POST", "/user/favourites");
     	testUserRESTController.postFavourite(0, request, response);
-    	assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+    	assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
     }
     
     /**
