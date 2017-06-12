@@ -76,10 +76,11 @@ public class RideShareRequestTest {
 	/**
 	 * Test fillFields with no fromlocation
 	 */
-	@Test(expected = WrongFormatException.class)
+	@Test
 	public void rideShareRequestFillFieldsTestWithNoTravelDateAndTime(){
 		JSONObjectforFillFields.remove(Constants.listingDataFieldTravelDateAndTime);
 		testListing.fillFields(JSONObjectforFillFields, 0);
+		assertNull(testListing.getTravelDateAndTime());
 	}
 
 }

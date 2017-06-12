@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +25,6 @@ public class RideSharingTest {
 	private String stop1;
 	private String stop2;
 	
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 	
 	@Before
 	public void initObjects(){
@@ -75,11 +74,10 @@ public class RideSharingTest {
 	 * Test fillFields with int fromlocation
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithIntFromLocation() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldFromLocation);
 		obj1.put(Constants.listingDataFieldFromLocation, 1);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -87,11 +85,10 @@ public class RideSharingTest {
 	 * Test fillFields with boolean fromlocation
 	 * @throws WrongFormatException
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithBooleanFromLocation() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldFromLocation);
 		obj1.put(Constants.listingDataFieldFromLocation, true);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 
@@ -101,11 +98,10 @@ public class RideSharingTest {
 	 * Test fillFields with int journeyStops
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithIntJourneyStops() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldJourneyStops);
 		obj1.put(Constants.listingDataFieldJourneyStops, 2);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -113,11 +109,10 @@ public class RideSharingTest {
 	 * Test fillFields with String journeyStops
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithStringJourneyStops() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldJourneyStops);
 		obj1.put(Constants.listingDataFieldJourneyStops, "KeinHalt");
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -125,11 +120,10 @@ public class RideSharingTest {
 	 * Test fillFields with Boolean journeyStops
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithBooleanJourneyStops() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldJourneyStops);
 		obj1.put(Constants.listingDataFieldJourneyStops, true);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -139,11 +133,10 @@ public class RideSharingTest {
 	 * Test fillFields with int toLocation
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithIntToLocation() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldToLocation);
 		obj1.put(Constants.listingDataFieldToLocation, 20);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -151,11 +144,10 @@ public class RideSharingTest {
 	 * Test fillFields with boolean toLocation
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithBooleanToLocation() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldToLocation);
 		obj1.put(Constants.listingDataFieldToLocation, true);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 
@@ -165,11 +157,10 @@ public class RideSharingTest {
 	 * Test fillFields with negative integer availableSeats
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithNegativInt() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldAvailableSeats);
 		obj1.put(Constants.listingDataFieldAvailableSeats, -1);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -177,11 +168,10 @@ public class RideSharingTest {
 	 * Test fillFields with String availableSeats
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithStringAvailableSeats() throws WrongFormatException {
 		obj1.remove(Constants.listingDataFieldAvailableSeats);
 		obj1.put(Constants.listingDataFieldAvailableSeats, "Vier");
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -189,11 +179,10 @@ public class RideSharingTest {
 	 * Test fillFields with boolean availableSeats
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestWithBooleanAvailableSeats() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldAvailableSeats);
 		obj1.put(Constants.listingDataFieldAvailableSeats, true);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -203,11 +192,10 @@ public class RideSharingTest {
 	 * Test fillFields with String travelDateAndTime
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestStringTravelDateAndTime() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldTravelDateAndTime);
 		obj1.put(Constants.listingDataFieldTravelDateAndTime, "21.3.17");
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	
@@ -215,11 +203,10 @@ public class RideSharingTest {
 	 * Test fiellFields with boolean travelDateAndTime
 	 * @throws WrongFormatException 
 	 */
-	@Test
+	@Test(expected = JSONException.class)
 	public void rideSharingFillFieldsTestBooleanTavelDateAndTime() throws WrongFormatException{
 		obj1.remove(Constants.listingDataFieldTravelDateAndTime);
 		obj1.put(Constants.listingDataFieldTravelDateAndTime, true);
-		thrown.expect(WrongFormatException.class);
 		rideSharetest.fillFields(obj1, 0);
 	}
 	

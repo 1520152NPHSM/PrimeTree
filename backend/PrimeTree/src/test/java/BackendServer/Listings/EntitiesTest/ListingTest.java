@@ -72,8 +72,8 @@ public class ListingTest {
 		locations[1] = "Koeln";
 
 		typeArray = new String[2];
-		typeArray[0] = "SellItem";
-		typeArray[1] = "RideSharing";
+		typeArray[0] = Constants.listingTypeNameSellItem;
+		typeArray[1] = Constants.listingTypeNameRideSharing;
 	}
 
 	// ---------------------------------------- Correct tests
