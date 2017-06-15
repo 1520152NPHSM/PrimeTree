@@ -84,6 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
             http.rememberMe().rememberMeServices(tokenBasedRememberMeService);
+        http.cors();
 
     }
 

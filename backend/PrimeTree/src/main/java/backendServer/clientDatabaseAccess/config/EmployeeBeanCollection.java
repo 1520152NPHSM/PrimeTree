@@ -24,7 +24,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
-		basePackages = "BackendServer.ClientDatabaseAccess.Repositories",
+		basePackages = "backendServer.clientDatabaseAccess.repositories",
 		entityManagerFactoryRef = "employeeEntityManager", 
 	    transactionManagerRef = "employeeTransactionManager"
 		)
@@ -43,7 +43,7 @@ public class EmployeeBeanCollection {
           = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(employeeDataSource());
         em.setPackagesToScan(
-          new String[] { "BackendServer.ClientDatabaseAccess.Entities" });
+          new String[] { "backendServer.clientDatabaseAccess.entities" });
         em.setPersistenceUnitName("Employee");
  
         HibernateJpaVendorAdapter vendorAdapter

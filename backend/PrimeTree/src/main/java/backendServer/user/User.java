@@ -107,7 +107,7 @@ public class User implements UserDetails {
 		userAsJSON.put(Constants.userFieldEMail, this.getEMail());
 		userAsJSON.put(Constants.userFieldPhone, this.getPhoneNumber());
 		if(this.getLocation()!=null){
-			userAsJSON.put(Constants.userFieldLocation, this.getLocation());
+			userAsJSON.put(Constants.userFieldLocation, this.getLocation().getOrtName());
 		}else{
 			userAsJSON.put(Constants.userFieldLocation, "NotKnown");
 		}

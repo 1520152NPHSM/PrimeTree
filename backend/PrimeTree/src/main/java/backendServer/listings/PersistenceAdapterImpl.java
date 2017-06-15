@@ -436,14 +436,13 @@ public class PersistenceAdapterImpl implements PersistenceAdapter {
 		final String localPath="src/main/webapp/resources/assets/listings/" + listingId + "/";
 		final String localFileName=makeLocalMainImagePath(listingId, originalFilename);
 		uploadAnyImage(imageData, localPath, localFileName);
-		this.getListingById(listingId).setPicture(getPublicFilePathFromLocal(localPath+localFileName));
 		try {
 			this.performActionOnAlllistingControllers(listingId, new ListingObjectControllerActionPerformer(){
 
 				@Override
 				public Object performAction(long listingId)
 						throws ListingNotFoundException, WrongFormatException, NoImageGallerySupportedException, MainImageNotSupportedException {
-					this.listingObjectController.setMainImageOnListing(listingId, localPath+localFileName);
+					this.listingObjectController.setMainImageOnListing(listingId, getPublicFilePathFromLocal(localPath+localFileName));
 					return null;
 				}
 				

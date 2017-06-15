@@ -221,5 +221,8 @@ public interface PersistenceAdapter {
 	 */
 	public void deleteTemporaryImage(String imagePath) throws PathNotTemporaryException;
 
+	/**This method lets statistics register all existing listings
+	 * @param statistics
+	 */
 	public void registerAllListingsInGlobalStatistics(GlobalStatistics statistics);
 }

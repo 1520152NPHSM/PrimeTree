@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import backendServer.clientDatabaseAccess.config.EmployeeBeanCollection;
+import backendServer.exceptions.UserHadAlreadyTheRightAdminStatusException;
 import backendServer.exceptions.UserNotFoundException;
 import backendServer.listings.Constants;
 import backendServer.listings.ListingBeanCollection;
@@ -238,34 +239,13 @@ public class UserRestControllerTest {
      * this test can only run if declareadmin is correct
      */
     @Test
-    public void userRESTControllerDeleteAdminTest(){
+    public void userRESTControllerDeleteAdminTest() throws UserNotFoundException, UserHadAlreadyTheRightAdminStatusException{
     	request = new MockHttpServletRequest("POST", "/user/{id}/admin");
     	//ToDo find user that is no admin
     	testUserRESTController.declareAdmin(2, request, response);
     	request = new MockHttpServletRequest("DELETE", "/user/{id}/admin");
-    	testUserRESTController.deleteAdmin(2, request, response);
+    	testUserRESTController.deleteAdmin(request, response);
     	assertEquals(HttpServletResponse.SC_OK, response.getStatus());
-    }
-    
-    /**
-     * test deleteAdmin with wrong user ID
-     */
-    @Test
-    public void userRESTControllerDeleteAdminTestWithWrongUserID(){
-    	request = new MockHttpServletRequest("DELETE", "/user/{id}/admin");
-    	testUserRESTController.deleteAdmin(3, request, response);
-    	assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
-    }
-    
-    /**
-     * test deleteAdmin with no admin user
-     */
-    @Test
-    public void userRESTControllerDeleteAdminTestWithNoAdminUer(){
-    	request = new MockHttpServletRequest("DELETE", "/user/{id}/admin");
-    	//ToDo find User thats no admin
-    	testUserRESTController.deleteAdmin(2, request, response);
-    	assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
     }
     
 }
