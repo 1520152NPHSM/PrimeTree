@@ -24,7 +24,7 @@ import backendServer.user.service.UserManagerImpl;
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
-		basePackages = "BackendServer.UserData.Repositories",
+		basePackages = "backendServer.userData.repositories",
 		entityManagerFactoryRef = "userEntityManager", 
 	    transactionManagerRef = "userTransactionManager"
 		)
@@ -44,7 +44,7 @@ public class UserBeanCollection {
           = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(userDataSource());
         em.setPackagesToScan(
-          new String[] { "BackendServer.UserData.Entities" });
+          new String[] { "backendServer.userData.entities" });
         em.setPersistenceUnitName("user");
  
         HibernateJpaVendorAdapter vendorAdapter

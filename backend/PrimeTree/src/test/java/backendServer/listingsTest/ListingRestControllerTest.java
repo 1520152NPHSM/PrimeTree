@@ -410,6 +410,7 @@ public class ListingRestControllerTest{
 		resultJSON = new JSONObject(result);
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", file.getOriginalFilename());
 		testRESTController.listingMainImageUpload(listingID, request, response, file);
 		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
 	}
@@ -424,6 +425,7 @@ public class ListingRestControllerTest{
 		resultJSON = new JSONObject(result);
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", fileZwei.getOriginalFilename());
 		testRESTController.listingMainImageUpload(listingID, request, response, fileZwei);
 		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
 	}
@@ -438,6 +440,7 @@ public class ListingRestControllerTest{
 		resultJSON = new JSONObject(result);
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", fileDrei.getOriginalFilename());
 		testRESTController.listingMainImageUpload(listingID, request, response, fileDrei);
 		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
 	}
@@ -452,6 +455,7 @@ public class ListingRestControllerTest{
 		resultJSON = new JSONObject(result);
 		listingID =  resultJSON.getInt(Constants.listingDataFieldId);
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", fileVier.getOriginalFilename());
 		testRESTController.listingMainImageUpload(listingID, request, response, fileVier);
 		assertEquals(HttpServletResponse.SC_CREATED, response.getStatus());
 	}
@@ -462,6 +466,7 @@ public class ListingRestControllerTest{
 	@Test
 	public void listingMainImageUploadTestWithWrongListingID(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", file.getOriginalFilename());
 		testRESTController.listingMainImageUpload(-1, request, response, file);
 		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
@@ -472,6 +477,7 @@ public class ListingRestControllerTest{
 	@Test
 	public void listingMainImageUploadTestWithWrongFile(){
 		request = new MockHttpServletRequest("PUT", "listing/upload/main-image/{id}");
+		request.addHeader("fileType", fileFuenf.getOriginalFilename());
 		testRESTController.listingMainImageUpload(0, request, response, fileFuenf);
 		assertEquals(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, response.getStatus());
 	}

@@ -436,7 +436,7 @@ public class ListingRESTControllerSearch_SortTest {
 		listing34.put(Constants.listingDataFieldCreateDate, createDate);
 		listing34.put(Constants.listingDataFieldDeadLine, expiryDate + 2300);
 		listing34.put(Constants.listingDataFieldCondition, Constants.allItemConditions.get(0));
-		listing34 = new JSONObject();
+		listing35 = new JSONObject();
 
 		listing35.put(Constants.listingDataFieldListingType, Constants.listingTypeNamePurchaseRequest);
 		listing35.put(Constants.listingDataFieldTitle, "Suche Fernseher");
@@ -604,57 +604,62 @@ public class ListingRESTControllerSearch_SortTest {
 		listing51.put(Constants.listingDataFieldBorrowFromDate, fromDate + 200);
 		listing51.put(Constants.listingDataFieldBorrowToDate, toDate + 1000);
 
-		stringListing1 = testRESTController.createListing(stringListing1, request, response);
-		stringListing2 = testRESTController.createListing(stringListing2, request, response);
-		stringListing3 = testRESTController.createListing(stringListing3, request, response);
-		stringListing4 = testRESTController.createListing(stringListing4, request, response);
-		stringListing5 = testRESTController.createListing(stringListing5, request, response);
-		stringListing6 = testRESTController.createListing(stringListing6, request, response);
-		stringListing7 = testRESTController.createListing(stringListing7, request, response);
-		stringListing8 = testRESTController.createListing(stringListing8, request, response);
-		stringListing9 = testRESTController.createListing(stringListing9, request, response);
-		stringListing10 = testRESTController.createListing(stringListing10, request, response);
-		stringListing11 = testRESTController.createListing(stringListing11, request, response);
-		stringListing12 = testRESTController.createListing(stringListing12, request, response);
-		stringListing13 = testRESTController.createListing(stringListing13, request, response);
-		stringListing14 = testRESTController.createListing(stringListing14, request, response);
-		stringListing15 = testRESTController.createListing(stringListing15, request, response);
-		stringListing16 = testRESTController.createListing(stringListing16, request, response);
-		stringListing17 = testRESTController.createListing(stringListing17, request, response);
-		stringListing18 = testRESTController.createListing(stringListing18, request, response);
-		stringListing19 = testRESTController.createListing(stringListing19, request, response);
-		stringListing20 = testRESTController.createListing(stringListing20, request, response);
-		stringListing21 = testRESTController.createListing(stringListing21, request, response);
-		stringListing22 = testRESTController.createListing(stringListing22, request, response);
-		stringListing23 = testRESTController.createListing(stringListing23, request, response);
-		stringListing24 = testRESTController.createListing(stringListing24, request, response);
-		stringListing25 = testRESTController.createListing(stringListing25, request, response);
-		stringListing26 = testRESTController.createListing(stringListing26, request, response);
-		stringListing27 = testRESTController.createListing(stringListing27, request, response);
-		stringListing28 = testRESTController.createListing(stringListing28, request, response);
-		stringListing29 = testRESTController.createListing(stringListing29, request, response);
-		stringListing30 = testRESTController.createListing(stringListing30, request, response);
-		stringListing31 = testRESTController.createListing(stringListing31, request, response);
-		stringListing32 = testRESTController.createListing(stringListing32, request, response);
-		stringListing33 = testRESTController.createListing(stringListing34, request, response);
-		stringListing34 = testRESTController.createListing(stringListing34, request, response);
-		stringListing35 = testRESTController.createListing(stringListing35, request, response);
-		stringListing36 = testRESTController.createListing(stringListing36, request, response);
-		stringListing37 = testRESTController.createListing(stringListing37, request, response);
-		stringListing38 = testRESTController.createListing(stringListing38, request, response);
-		stringListing39 = testRESTController.createListing(stringListing39, request, response);
-		stringListing40 = testRESTController.createListing(stringListing40, request, response);
-		stringListing41 = testRESTController.createListing(stringListing41, request, response);
-		stringListing42 = testRESTController.createListing(stringListing42, request, response);
-		stringListing43 = testRESTController.createListing(stringListing43, request, response);
-		stringListing44 = testRESTController.createListing(stringListing44, request, response);
-		stringListing45 = testRESTController.createListing(stringListing45, request, response);
-		stringListing46 = testRESTController.createListing(stringListing46, request, response);
-		stringListing47 = testRESTController.createListing(stringListing47, request, response);
-		stringListing48 = testRESTController.createListing(stringListing48, request, response);
-		stringListing48 = testRESTController.createListing(stringListing49, request, response);
-		stringListing50 = testRESTController.createListing(stringListing50, request, response);
-		stringListing51 = testRESTController.createListing(stringListing51, request, response);
+//		stringListing1 = testRESTController.createListing(stringListing1, request, response);
+//		stringListing2 = testRESTController.createListing(stringListing2, request, response);
+//		stringListing3 = testRESTController.createListing(stringListing3, request, response);
+//		stringListing4 = testRESTController.createListing(stringListing4, request, response);
+//		stringListing5 = testRESTController.createListing(stringListing5, request, response);
+//		stringListing6 = testRESTController.createListing(stringListing6, request, response);
+//		stringListing7 = testRESTController.createListing(stringListing7, request, response);
+//		stringListing8 = testRESTController.createListing(stringListing8, request, response);
+//		stringListing9 = testRESTController.createListing(stringListing9, request, response);
+//		stringListing10 = testRESTController.createListing(stringListing10, request, response);
+//		stringListing11 = testRESTController.createListing(stringListing11, request, response);
+//		stringListing12 = testRESTController.createListing(stringListing12, request, response);
+//		stringListing13 = testRESTController.createListing(stringListing13, request, response);
+//		stringListing14 = testRESTController.createListing(stringListing14, request, response);
+//		stringListing15 = testRESTController.createListing(stringListing15, request, response);
+//		stringListing16 = testRESTController.createListing(stringListing16, request, response);
+//		stringListing17 = testRESTController.createListing(stringListing17, request, response);
+//		stringListing18 = testRESTController.createListing(stringListing18, request, response);
+//		stringListing19 = testRESTController.createListing(stringListing19, request, response);
+//		stringListing20 = testRESTController.createListing(stringListing20, request, response);
+//		stringListing21 = testRESTController.createListing(stringListing21, request, response);
+//		stringListing22 = testRESTController.createListing(stringListing22, request, response);
+//		stringListing23 = testRESTController.createListing(stringListing23, request, response);
+//		stringListing24 = testRESTController.createListing(stringListing24, request, response);
+//		stringListing25 = testRESTController.createListing(stringListing25, request, response);
+//		stringListing26 = testRESTController.createListing(stringListing26, request, response);
+//		stringListing27 = testRESTController.createListing(stringListing27, request, response);
+//		stringListing28 = testRESTController.createListing(stringListing28, request, response);
+//		stringListing29 = testRESTController.createListing(stringListing29, request, response);
+//		stringListing30 = testRESTController.createListing(stringListing30, request, response);
+//		stringListing31 = testRESTController.createListing(stringListing31, request, response);
+//		stringListing32 = testRESTController.createListing(stringListing32, request, response);
+//		stringListing33 = testRESTController.createListing(stringListing34, request, response);
+//		stringListing34 = testRESTController.createListing(stringListing34, request, response);
+//		stringListing35 = testRESTController.createListing(stringListing35, request, response);
+//		stringListing36 = testRESTController.createListing(stringListing36, request, response);
+//		stringListing37 = testRESTController.createListing(stringListing37, request, response);
+//		stringListing38 = testRESTController.createListing(stringListing38, request, response);
+//		stringListing39 = testRESTController.createListing(stringListing39, request, response);
+//		stringListing40 = testRESTController.createListing(stringListing40, request, response);
+//		stringListing41 = testRESTController.createListing(stringListing41, request, response);
+//		stringListing42 = testRESTController.createListing(stringListing42, request, response);
+//		stringListing43 = testRESTController.createListing(stringListing43, request, response);
+//		stringListing44 = testRESTController.createListing(stringListing44, request, response);
+//		stringListing45 = testRESTController.createListing(stringListing45, request, response);
+//		stringListing46 = testRESTController.createListing(stringListing46, request, response);
+//		stringListing47 = testRESTController.createListing(stringListing47, request, response);
+//		stringListing48 = testRESTController.createListing(stringListing48, request, response);
+//		stringListing48 = testRESTController.createListing(stringListing49, request, response);
+//		stringListing50 = testRESTController.createListing(stringListing50, request, response);
+//		stringListing51 = testRESTController.createListing(stringListing51, request, response);
+	}
+	
+	@Test
+	public void empty(){
+		
 	}
 
 }

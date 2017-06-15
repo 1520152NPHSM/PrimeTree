@@ -47,8 +47,8 @@ public class Constants {
 	listingDataFieldRegularity="regularity";
 	
 	public static final String
-	listingKindOffering="Offering",
-	listingKindRequest="Request";
+	listingKindOffering="offer",
+	listingKindRequest="request";
 	
 	//The following list define enumerations
 	public static final List<String>
@@ -129,12 +129,11 @@ public class Constants {
 	globalStatisticsFieldNumberOfAdmins="numberOfAdmins";
 
 	public static final String 
-	locationInformationFieldLocationName="locationName",
-	locationInformationFieldNumberOfListings="numberOfListings";
+	locationInformationFieldLocationName="locationName";
 
 	public static final String 
 	listingTypeInformationFieldListingTypeName="listingTypeName",
-	listingTypeInformationFieldNumberOfListings="numberOfListings";
+	listingTypeOrLocationInformationFieldNumberOfListings="numberOfListings";
 
 	public static List<String> allLocations;
 

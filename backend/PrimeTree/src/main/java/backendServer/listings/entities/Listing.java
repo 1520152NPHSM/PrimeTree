@@ -1,7 +1,7 @@
 package backendServer.listings.entities;
 
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -118,7 +118,7 @@ public abstract class Listing {
 	
 	/**This method checks whether the expiryDate is in the past*/
 	public boolean isExpired(){
-		return expiryDate!=null&&expiryDate.before(new Date());
+		return expiryDate!=null&&expiryDate.before(new Date(new java.util.Date().getTime()));
 	}
 	
 	public void setImageOfGallery(String pathName, int galleryIndex) throws NoImageGallerySupportedException, IndexOutOfBoundsException{

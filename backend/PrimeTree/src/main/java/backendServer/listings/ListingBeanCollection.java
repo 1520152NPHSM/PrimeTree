@@ -43,7 +43,7 @@ import backendServer.user.service.UserManagerImpl;
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
-		basePackages = "BackendServer.Listings.Repositories",
+		basePackages = "backendServer.listings.repositories",
 		entityManagerFactoryRef = "listingEntityManager", 
 	    transactionManagerRef = "listingTransactionManager"
 		)
@@ -62,7 +62,7 @@ public class ListingBeanCollection {
           = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(listingDataSource());
         em.setPackagesToScan(
-          new String[] { "BackendServer.Listings.Entities" });
+          new String[] { "backendServer.listings.entities" });
         em.setPersistenceUnitName("Listing");
  
         HibernateJpaVendorAdapter vendorAdapter

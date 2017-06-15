@@ -333,7 +333,9 @@ public class ListingRESTController {
 					if(file==null){
 						throw new IOException();
 					}
-					persistenceAdapter.uploadMainImage(file.getBytes(), listingId, file.getOriginalFilename());
+			//		request.getContentType(), request.getHeaderNames()
+					System.out.println(request.getHeader("fileType"));
+					persistenceAdapter.uploadMainImage(file.getBytes(), listingId, request.getHeader("fileType"));
 					response.setStatus(HttpServletResponse.SC_CREATED);
 				} catch (IOException e) {
 					response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
